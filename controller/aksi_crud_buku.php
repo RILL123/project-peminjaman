@@ -15,6 +15,7 @@ function createFileName($judul, $ext) {
 if (isset($_POST['tambah'])) {
 	$judul = mysqli_real_escape_string($koneksi, $_POST['judul']);
 	$penulis = mysqli_real_escape_string($koneksi, $_POST['penulis']);
+	$kategori = mysqli_real_escape_string($koneksi, $_POST['kategori']);
 	$tahun = mysqli_real_escape_string($koneksi, $_POST['tahun']);
 	$stok = mysqli_real_escape_string($koneksi, $_POST['stok']);
 	$cover = '';
@@ -23,7 +24,7 @@ if (isset($_POST['tambah'])) {
 		$cover = createFileName($judul, $ext);
 		move_uploaded_file($_FILES['cover']['tmp_name'], '../public/cover/' . $cover);
 	}
-	$query = "INSERT INTO buku (judul, penulis, tahun, stok, cover) VALUES ('$judul', '$penulis', '$tahun', '$stok', '$cover')";
+	$query = "INSERT INTO buku (judul, penulis, kategori, tahun, stok, cover) VALUES ('$judul', '$penulis', '$kategori', '$tahun', '$stok', '$cover')";
 	mysqli_query($koneksi, $query);
 	$judul_url = urlencode($_POST['judul']);
 	header("Location: ../view/admin/crud_buku.php?notif=added&judul=$judul_url");
@@ -36,6 +37,7 @@ if (isset($_POST['edit'])) {
 	$id = mysqli_real_escape_string($koneksi, $_POST['id_buku']);
 	$judul = mysqli_real_escape_string($koneksi, $_POST['judul']);
 	$penulis = mysqli_real_escape_string($koneksi, $_POST['penulis']);
+	$kategori = mysqli_real_escape_string($koneksi, $_POST['kategori']);
 	$tahun = mysqli_real_escape_string($koneksi, $_POST['tahun']);
 	$stok = mysqli_real_escape_string($koneksi, $_POST['stok']);
 	$cover_sql = '';
@@ -57,7 +59,7 @@ if (isset($_POST['edit'])) {
 		$cover_sql = ", cover='$cover'";
 	}
 
-	$query = "UPDATE buku SET judul='$judul', penulis='$penulis', tahun='$tahun', stok='$stok' $cover_sql WHERE id_buku='$id'";
+	$query = "UPDATE buku SET judul='$judul', penulis='$penulis', kategori='$kategori', tahun='$tahun', stok='$stok' $cover_sql WHERE id_buku='$id'";
 	mysqli_query($koneksi, $query);
 	$judul_url = urlencode($_POST['judul']);
 	header("Location: ../view/admin/crud_buku.php?notif=edited&judul=$judul_url");

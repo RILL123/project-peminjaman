@@ -5,6 +5,7 @@ $isEdit = false;
 $editData = [
     'id_buku' => '',
     'judul' => '',
+    'kategori' => '',
     'penulis' => '',
     'tahun' => '',
     'stok' => '',
@@ -70,22 +71,29 @@ if (isset($_GET['edit'])) {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
            
                     <div class="space-y-5">
-                 
                         <div>
                             <label class="block text-perpusku1 font-bold text-sm mb-2">Judul Buku *</label>
                             <input type="text" name="judul" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" placeholder="Masukkan judul buku" required value="<?= htmlspecialchars($editData['judul']) ?>">
                         </div>
-              
                         <div>
                             <label class="block text-perpusku1 font-bold text-sm mb-2">Penulis *</label>
                             <input type="text" name="penulis" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" placeholder="Masukkan nama penulis" required value="<?= htmlspecialchars($editData['penulis']) ?>">
                         </div>
-                    
+                        <div>
+                            <label class="block text-perpusku1 font-bold text-sm mb-2">Kategori *</label>
+                            <select name="kategori" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" required>
+                                <option value="">-- Pilih Kategori --</option>
+                                <option value="Fiksi" <?= ($editData['kategori'] ?? '') == 'Fiksi' ? 'selected' : '' ?>>Fiksi</option>
+                                <option value="Non-Fiksi" <?= ($editData['kategori'] ?? '') == 'Non-Fiksi' ? 'selected' : '' ?>>Non-Fiksi</option>
+                                <option value="Komik" <?= ($editData['kategori'] ?? '') == 'Komik' ? 'selected' : '' ?>>Komik</option>
+                                <option value="Ensiklopedia" <?= ($editData['kategori'] ?? '') == 'Ensiklopedia' ? 'selected' : '' ?>>Ensiklopedia</option>
+                                <option value="Novel" <?= ($editData['kategori'] ?? '') == 'Novel' ? 'selected' : '' ?>>Novel</option>
+                            </select>
+                        </div>
                         <div>
                             <label class="block text-perpusku1 font-bold text-sm mb-2">Tahun Terbit *</label>
                             <input type="number" name="tahun" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" placeholder="Contoh: 2024" min="1900" max="2100" required value="<?= htmlspecialchars($editData['tahun']) ?>">
                         </div>
-                   
                         <div>
                             <label class="block text-perpusku1 font-bold text-sm mb-2">Stok Buku *</label>
                             <input type="number" name="stok" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" placeholder="Jumlah stok buku" min="0" required value="<?= htmlspecialchars($editData['stok']) ?>">

@@ -1,11 +1,16 @@
 <?php
 include '../../model/koneksi.php';
 $search = isset($_GET['search']) ? mysqli_real_escape_string($koneksi, $_GET['search']) : '';
+$kategori = isset($_GET['kategori']) ? mysqli_real_escape_string($koneksi, $_GET['kategori']) : '';
+$where = [];
 if ($search) {
-	$buku = mysqli_query($koneksi, "SELECT * FROM buku WHERE judul LIKE '%$search%' OR penulis LIKE '%$search%' ORDER BY created_at DESC");
-} else {
-	$buku = mysqli_query($koneksi, "SELECT * FROM buku ORDER BY created_at DESC");
+	$where[] = "(judul LIKE '%$search%' OR penulis LIKE '%$search%')";
 }
+if ($kategori) {
+	$where[] = "kategori = '$kategori'";
+}
+$where_sql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+$buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_at DESC");
 $buku_count = mysqli_num_rows($buku);
 ?>
 <!DOCTYPE html>
@@ -78,6 +83,16 @@ $buku_count = mysqli_num_rows($buku);
 			<div class="flex flex-col sm:flex-row gap-3">
 				<div class="flex-1">
 					<input type="text" name="search" class="w-full border-2 border-perpusku2 rounded-xl p-4 focus:border-perpusku1 focus:outline-none focus:ring-2 focus:ring-perpusku3 focus:ring-opacity-50 transition duration-300 shadow-sm" placeholder="Cari judul atau penulis..." value="<?= htmlspecialchars($search) ?>">
+				</div>
+				<div class="w-56">
+					<select name="kategori" class="w-full border-2 border-perpusku2 rounded-xl p-4 focus:border-perpusku1 focus:outline-none focus:ring-2 focus:ring-perpusku3 focus:ring-opacity-50 transition duration-300 shadow-sm">
+						<option value="">Semua Kategori</option>
+						<option value="Fiksi" <?= $kategori == 'Fiksi' ? 'selected' : '' ?>>Fiksi</option>
+						<option value="Non-Fiksi" <?= $kategori == 'Non-Fiksi' ? 'selected' : '' ?>>Non-Fiksi</option>
+						<option value="Komik" <?= $kategori == 'Komik' ? 'selected' : '' ?>>Komik</option>
+						<option value="Ensiklopedia" <?= $kategori == 'Ensiklopedia' ? 'selected' : '' ?>>Ensiklopedia</option>
+						<option value="Novel" <?= $kategori == 'Novel' ? 'selected' : '' ?>>Novel</option>
+					</select>
 				</div>
 				<button type="submit" class="bg-gradient-to-r from-perpusku2 to-perpusku1 hover:from-perpusku1 hover:to-perpusku2 text-white px-8 py-4 rounded-xl font-bold transition duration-300 shadow-lg hover:shadow-xl">Cari</button>
 			</div>
