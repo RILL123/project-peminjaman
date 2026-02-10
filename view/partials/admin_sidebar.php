@@ -77,7 +77,7 @@
                     <img src="../../public/image/pinjam.png" class="h-5 w-5 flex-shrink-0" alt="Peminjaman">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Data Peminjaman</span>
                 </a>
-                <a href="laporan.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
+                <a href="../admin/crud_user.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
                     <img src="../../public/image/user.png" class="h-5 w-5 flex-shrink-0" alt="User">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Data User</span>
                 </a>
