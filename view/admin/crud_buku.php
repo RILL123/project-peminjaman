@@ -123,6 +123,7 @@ $buku_count = mysqli_num_rows($buku);
 						<div>
 							<h3 class="font-semibold text-perpusku1 text-sm line-clamp-2"><?= htmlspecialchars($row['judul']) ?></h3>
 							<p class="text-xs text-gray-600 mt-1 line-clamp-1"><?= htmlspecialchars($row['penulis']) ?></p>
+                                <p class="text-xs text-perpusku2 mt-1">Kategori: <span class="font-bold"><?= htmlspecialchars($row['kategori']) ?></span></p>
 						</div>
 						<div class="flex gap-2 mt-3 text-center">
 							<div class="flex-1">

@@ -24,6 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Insert ke detail_peminjaman
             $query2 = "INSERT INTO detail_peminjaman (id_peminjaman, id_buku) VALUES ('$id_peminjaman', '$id_buku')";
             if (mysqli_query($koneksi, $query2)) {
+                    // Kurangi stok buku
+                    $update_stok = "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0";
+                    mysqli_query($koneksi, $update_stok);
                 $_SESSION['message'] = 'Data peminjaman berhasil ditambahkan';
                 $_SESSION['message_type'] = 'success';
             } else {
