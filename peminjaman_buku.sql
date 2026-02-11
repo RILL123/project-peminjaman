@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2026 at 02:06 AM
+-- Generation Time: Feb 11, 2026 at 05:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,7 +47,7 @@ INSERT INTO `buku` (`id_buku`, `cover`, `judul`, `kategori`, `penulis`, `tahun`,
 (7, 'Feel_The_Nature_Origin.jpg', 'Feel The Nature Origin', 'Non-Fiksi', 'Steven', '2020', 48, '2026-01-29 07:54:41'),
 (8, 'Wild_Life.jpg', 'Wild Life', 'Ensiklopedia', 'Edi Kurniawan', '2026', 89, '2026-01-29 07:55:59'),
 (9, 'Adventure_Hikes.jpg', 'Adventure Hikes', 'Non-Fiksi', 'Edi Kurniawan', '2022', 49, '2026-01-29 08:02:52'),
-(10, 'The_Bike_Guy.jpg', 'The Bike Guy', 'Fiksi', 'Edi Kurniawan', '2024', 98, '2026-01-29 08:07:08'),
+(10, 'The_Bike_Guy.jpg', 'The Bike Guy', 'Fiksi', 'Edi Kurniawan', '2024', 97, '2026-01-29 08:07:08'),
 (11, 'The_World_Need_More_Love.jpg', 'The World Need More Love', 'Non-Fiksi', 'Steven', '2024', 67, '2026-01-29 08:12:25'),
 (14, 'Wild_Adventure.jpg', 'Wild Adventure', 'Novel', 'Fira Feona', '2025', 77, '2026-01-29 09:37:45'),
 (17, 'Balis_Day_of_Silence.jpg', 'Bali\'s Day of Silence', 'Novel', 'Fira Feona', '2025', 45, '2026-01-29 09:45:57'),
@@ -102,16 +102,15 @@ CREATE TABLE `peminjaman` (
   `id_peminjaman` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `tanggal_pinjam` date NOT NULL,
-  `tanggal_kembali` date NOT NULL,
-  `status` enum('dipinjam','dikembalikan') DEFAULT 'dipinjam'
+  `tanggal_kembali` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `peminjaman`
 --
 
-INSERT INTO `peminjaman` (`id_peminjaman`, `id_user`, `tanggal_pinjam`, `tanggal_kembali`, `status`) VALUES
-(1, 2, '2026-02-04', '2026-02-20', 'dipinjam');
+INSERT INTO `peminjaman` (`id_peminjaman`, `id_user`, `tanggal_pinjam`, `tanggal_kembali`) VALUES
+(1, 2, '2026-02-04', '2026-02-20');
 
 -- --------------------------------------------------------
 
@@ -209,7 +208,7 @@ ALTER TABLE `buku`
 -- AUTO_INCREMENT for table `detail_peminjaman`
 --
 ALTER TABLE `detail_peminjaman`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `laporan`
@@ -221,7 +220,7 @@ ALTER TABLE `laporan`
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pengembalian`
@@ -233,7 +232,7 @@ ALTER TABLE `pengembalian`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

@@ -11,8 +11,7 @@ $query = "SELECT
     b.penulis,
     b.cover,
     p.tanggal_pinjam,
-    p.tanggal_kembali,
-    p.status
+    p.tanggal_kembali
 FROM peminjaman p
 JOIN users u ON p.id_user = u.id_user
 JOIN detail_peminjaman dp ON p.id_peminjaman = dp.id_peminjaman
@@ -78,7 +77,6 @@ $aksi = $_GET['aksi'] ?? '';
                              <th class="px-4 py-3 border-b text-left font-semibold">Kategori</th>
                             <th class="px-4 py-3 border-b text-left font-semibold">Tanggal Pinjam</th>
                             <th class="px-4 py-3 border-b text-left font-semibold">Tanggal Kembali</th>
-                            <th class="px-4 py-3 border-b text-left font-semibold">Status</th>
                             <th class="px-4 py-3 border-b text-left font-semibold">Aksi</th>
                         </tr>
                     </thead>
@@ -93,7 +91,6 @@ $aksi = $_GET['aksi'] ?? '';
                                                         echo "<td class='px-4 py-3'>{$row['kategori']}</td>";
                                                         echo "<td class='px-4 py-3'>".date('d-m-Y', strtotime($row['tanggal_pinjam']))."</td>";
                                                         echo "<td class='px-4 py-3'>".date('d-m-Y', strtotime($row['tanggal_kembali']))."</td>";
-                                                        echo "<td class='px-4 py-3'>{$row['status']}</td>";
                                                         echo "<td class='px-4 py-3'>
                         <button 
                             onclick=\"setDetailData('{$row['id_peminjaman']}', '{$row['nama_user']}', '{$row['id_user']}', '{$row['tanggal_pinjam']}', '{$row['tanggal_kembali']}', '{$row['judul']}', '{$row['kategori']}', '{$row['penulis']}', '{$row['cover']}')\" 
@@ -185,7 +182,7 @@ $aksi = $_GET['aksi'] ?? '';
         function showSection(section) {
             document.getElementById('tableSection').classList.add('hidden');
             document.getElementById('detailSection').classList.add('hidden');
-            document.getElementById('rejectSection').classList.add('hidden');
+            document.getElementById('strukSection').classList.add('hidden');
             document.getElementById(section).classList.remove('hidden');
         }
         function backToTable() {

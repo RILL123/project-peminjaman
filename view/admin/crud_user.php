@@ -85,7 +85,7 @@ if (isset($_GET['edit'])) {
 						</select>
 					</div>
 					<div class="flex gap-2 mt-2">
-						<button type="submit" name="<?= $edit ? 'edit' : 'tambah' ?>" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">Simpan</button>
+						<button type="submit" name="<?= $edit ? 'edit' : 'tambah' ?>" class="bg-perpusku1 hover:bg-perpusku2 text-white px-4 py-2 rounded shadow">Simpan</button>
 						<?php if ($edit): ?>
 							<a href="crud_user.php" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded shadow">Batal</a>
 						<?php endif; ?>
