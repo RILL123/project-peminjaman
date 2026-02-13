@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2026 at 05:05 AM
+-- Generation Time: Feb 13, 2026 at 08:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -147,7 +147,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id_user`, `nama`, `username`, `password`, `role`, `created_at`) VALUES
 (1, 'Admin Perpus', 'admin', 'admin123', 'admin', '2026-01-21 08:24:52'),
-(2, 'Rill', 'rill', 'rill123', 'user', '2026-01-21 08:24:52');
+(2, 'Rill', 'rill', 'rill123', 'user', '2026-01-21 08:24:52'),
+(4, 'edi', 'edi', '$2y$10$omTIuH23l4z7PNgIrsinOuwVVusNbfd2sklXHM5CegQAA9UUcpxem', 'user', '2026-02-13 13:04:51'),
+(5, 'cihuy', 'cihuy', '$2y$10$e0Y9bAO2Uxu.UxHCFhvF4uZxFe9IZaDCbF0XGclsuAJaqGJN8e84e', 'admin', '2026-02-13 13:05:32');
 
 --
 -- Indexes for dumped tables
@@ -232,7 +234,7 @@ ALTER TABLE `pengembalian`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

@@ -41,11 +41,14 @@ if (isset($_GET['edit'])) {
 	</script>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-perpusku4 min-h-screen">
 	<?php include '../partials/admin_sidebar.php'; ?>
-	<div class="lg:ml-64 p-4">
+	<div id="mainContent" class="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300 p-4 md:p-6">
 		<div class="max-w-4xl mx-auto">
-			<h2 class="text-2xl font-bold mb-6 text-gray-800">Manajemen User</h2>
+			<div class="flex items-center justify-between mb-6">
+				<h2 class="text-2xl font-bold text-gray-800">Manajemen User</h2>
+				<a href="tambah_user.php" class="bg-perpusku3 hover:bg-yellow-400 text-perpusku1 font-semibold px-4 py-2 rounded shadow">+ Tambah User</a>
+			</div>
 			<?php if ($notif == 'added'): ?>
 				<div class="mb-4 p-3 rounded bg-green-100 text-green-800 border border-green-300">User berhasil ditambahkan!</div>
 			<?php elseif ($notif == 'edited'): ?>
@@ -54,47 +57,9 @@ if (isset($_GET['edit'])) {
 				<div class="mb-4 p-3 rounded bg-red-100 text-red-800 border border-red-300">User berhasil dihapus!</div>
 			<?php endif; ?>
 
-			<!-- Form Tambah/Edit User -->
-			<div class="bg-white rounded-lg shadow p-6 mb-8">
-				<div class="font-semibold text-lg mb-4 text-gray-700 flex items-center gap-2">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-					<?= $edit ? 'Edit User' : 'Tambah User' ?>
-				</div>
-				<form method="post" action="../../controller/aksi_crud_user.php" class="space-y-4">
-					<?php if ($edit): ?>
-						<input type="hidden" name="id_user" value="<?= htmlspecialchars($edit_data['id_user']) ?>">
-					<?php endif; ?>
-					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-						<input type="text" name="nama" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200" required value="<?= $edit ? htmlspecialchars($edit_data['nama']) : '' ?>">
-					</div>
-					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-						<input type="text" name="username" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200" required value="<?= $edit ? htmlspecialchars($edit_data['username']) : '' ?>">
-					</div>
-					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-1">Password <?= $edit ? '<span class=\'text-xs text-gray-500\'>(Kosongkan jika tidak diubah)</span>' : '' ?></label>
-						<input type="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200" <?= $edit ? '' : 'required' ?> autocomplete="new-password">
-					</div>
-					<div>
-						<label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-						<select name="role" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200" required>
-							<option value="">Pilih Role</option>
-							<option value="admin" <?= $edit && $edit_data['role'] == 'admin' ? 'selected' : '' ?>>Admin</option>
-							<option value="user" <?= $edit && $edit_data['role'] == 'user' ? 'selected' : '' ?>>User</option>
-						</select>
-					</div>
-					<div class="flex gap-2 mt-2">
-						<button type="submit" name="<?= $edit ? 'edit' : 'tambah' ?>" class="bg-perpusku1 hover:bg-perpusku2 text-white px-4 py-2 rounded shadow">Simpan</button>
-						<?php if ($edit): ?>
-							<a href="crud_user.php" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded shadow">Batal</a>
-						<?php endif; ?>
-					</div>
-				</form>
-			</div>
-
+  
 			<!-- Tabel User -->
-			<div class="bg-white rounded-lg shadow p-6">
+			<div class="bg-white rounded-xl shadow-xl p-6 md:p-8 mb-8">
 				<div class="font-semibold text-lg mb-4 text-gray-700 flex items-center gap-2">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" /></svg>
 					Daftar User
@@ -124,7 +89,7 @@ if (isset($_GET['edit'])) {
 								</td>
 								<td class="py-2 px-3 text-xs text-gray-500"><?= isset($row['create_at']) ? htmlspecialchars($row['create_at']) : '<span class="italic text-red-400">-</span>' ?></td>
 								<td class="py-2 px-3 flex gap-2">
-									<a href="crud_user.php?edit=<?= $row['id_user'] ?>" class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded shadow text-xs">Edit</a>
+									<a href="tambah_user.php?edit=<?= $row['id_user'] ?>" class="bg-perpusku1 hover:bg-perpusku2 text-white px-3 py-1 rounded shadow text-xs">Edit</a>
 									<a href="../../controller/aksi_crud_user.php?hapus=<?= $row['id_user'] ?>" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-xs" onclick="return confirm('Yakin hapus user ini?')">Hapus</a>
 								</td>
 							</tr>

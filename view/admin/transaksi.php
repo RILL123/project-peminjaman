@@ -94,13 +94,13 @@ $aksi = $_GET['aksi'] ?? '';
                                                         echo "<td class='px-4 py-3'>
                         <button 
                             onclick=\"setDetailData('{$row['id_peminjaman']}', '{$row['nama_user']}', '{$row['id_user']}', '{$row['tanggal_pinjam']}', '{$row['tanggal_kembali']}', '{$row['judul']}', '{$row['kategori']}', '{$row['penulis']}', '{$row['cover']}')\" 
-                            class='text-blue-500 hover:underline mr-2'
+                            class='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition mr-2'
                             data-judul='{$row['judul']}'
                             data-kategori='{$row['kategori']}'
                             data-penulis='{$row['penulis']}'
                             data-cover='{$row['cover']}'
                         >Detail</button>
-                        <button onclick=\"setReturnData('{$row['id_peminjaman']}', '{$row['nama_user']}', '{$row['id_user']}', '{$row['judul']}', '{$row['kategori']}', '{$row['penulis']}', '{$row['cover']}', '{$row['tanggal_pinjam']}', '{$row['tanggal_kembali']}')\" class='text-green-600 hover:underline'>Kembalikan Buku</button>
+                        <button onclick=\"setReturnData('{$row['id_peminjaman']}', '{$row['nama_user']}', '{$row['id_user']}', '{$row['judul']}', '{$row['kategori']}', '{$row['penulis']}', '{$row['cover']}', '{$row['tanggal_pinjam']}', '{$row['tanggal_kembali']}')\" class='bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition'>Kembalikan Buku</button>
                     </td>";
                                                         echo "</tr>";
                                                         $no++;
