@@ -5,7 +5,7 @@ include '../model/koneksi.php';
 if (isset($_POST['tambah'])) {
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $username = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = $_POST['password'];
     $role = mysqli_real_escape_string($koneksi, $_POST['role']);
     $query = "INSERT INTO users (nama, username, password, role) VALUES ('$nama', '$username', '$password', '$role')";
     mysqli_query($koneksi, $query);
