@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_buku = mysqli_real_escape_string($koneksi, $_POST['id_buku']);
         $tanggal_pinjam = mysqli_real_escape_string($koneksi, $_POST['tanggal_pinjam']);
         $tanggal_kembali = mysqli_real_escape_string($koneksi, $_POST['tanggal_kembali']);
-        // Insert ke tabel peminjaman
-        $query1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali, status) VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali', 'pending')";
+            // Insert ke tabel peminjaman tanpa kolom status
+            $query1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali) VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali')";
         if (mysqli_query($koneksi, $query1)) {
             $id_peminjaman = mysqli_insert_id($koneksi);
             // Insert ke detail_peminjaman
@@ -52,11 +52,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['message_type'] = 'error';
                 }
             } else if ($aksi === 'reject') {
+                // Ambil id_buku dari detail_peminjaman
+                $result_buku = mysqli_query($koneksi, "SELECT id_buku FROM detail_peminjaman WHERE id_peminjaman = $id_peminjaman");
+                if ($row_buku = mysqli_fetch_assoc($result_buku)) {
+                    $id_buku = $row_buku['id_buku'];
+                    // Tambah stok buku
+                    mysqli_query($koneksi, "UPDATE buku SET stok = stok + 1 WHERE id_buku = '$id_buku'");
+                }
                 // Hapus detail_peminjaman dulu
                 $del_detail = mysqli_query($koneksi, "DELETE FROM detail_peminjaman WHERE id_peminjaman = $id_peminjaman");
                 $del_peminjaman = mysqli_query($koneksi, "DELETE FROM peminjaman WHERE id_peminjaman = $id_peminjaman");
                 if ($del_detail && $del_peminjaman) {
-                    $_SESSION['message'] = 'Peminjaman berhasil ditolak & dihapus';
+                    $_SESSION['message'] = 'Peminjaman berhasil ditolak & dihapus, stok buku bertambah.';
                     $_SESSION['message_type'] = 'success';
                 } else {
                     $_SESSION['message'] = 'Gagal menghapus peminjaman: ' . mysqli_error($koneksi);

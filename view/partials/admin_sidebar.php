@@ -81,6 +81,10 @@
                     <img src="../../public/image/user.png" class="h-5 w-5 flex-shrink-0" alt="User">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Data User</span>
                 </a>
+                <a href="../admin/notifikasi.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
+                    <img src="../../public/image/bell.png" class="h-5 w-5 flex-shrink-0" alt="Notifikasi">
+                    <span class="sidebar-label font-medium text-sm group-hover:text-white">Notifikasi</span>
+                </a>
             </nav>
 
             <!-- Footer - Logout -->

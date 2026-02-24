@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2026 at 04:40 AM
+-- Generation Time: Feb 24, 2026 at 06:23 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,7 +47,7 @@ INSERT INTO `buku` (`id_buku`, `cover`, `judul`, `kategori`, `penulis`, `tahun`,
 (7, 'Feel_The_Nature_Origin.jpg', 'Feel The Nature Origin', 'Non-Fiksi', 'Steven', '2020', 48, '2026-01-29 07:54:41'),
 (8, 'Wild_Life.jpg', 'Wild Life', 'Ensiklopedia', 'Edi Kurniawan', '2026', 89, '2026-01-29 07:55:59'),
 (9, 'Adventure_Hikes.jpg', 'Adventure Hikes', 'Non-Fiksi', 'Edi Kurniawan', '2022', 49, '2026-01-29 08:02:52'),
-(10, 'The_Bike_Guy.jpg', 'The Bike Guy', 'Fiksi', 'Edi Kurniawan', '2024', 97, '2026-01-29 08:07:08'),
+(10, 'The_Bike_Guy.jpg', 'The Bike Guy', 'Fiksi', 'Edi Kurniawan', '2024', 96, '2026-01-29 08:07:08'),
 (11, 'The_World_Need_More_Love.jpg', 'The World Need More Love', 'Non-Fiksi', 'Steven', '2024', 67, '2026-01-29 08:12:25'),
 (14, 'Wild_Adventure.jpg', 'Wild Adventure', 'Novel', 'Fira Feona', '2025', 77, '2026-01-29 09:37:45'),
 (17, 'Balis_Day_of_Silence.jpg', 'Bali\'s Day of Silence', 'Novel', 'Fira Feona', '2025', 45, '2026-01-29 09:45:57'),
@@ -208,7 +208,7 @@ ALTER TABLE `buku`
 -- AUTO_INCREMENT for table `detail_peminjaman`
 --
 ALTER TABLE `detail_peminjaman`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `laporan`
@@ -220,7 +220,7 @@ ALTER TABLE `laporan`
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pengembalian`

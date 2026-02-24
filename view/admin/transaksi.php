@@ -11,7 +11,8 @@ $query = "SELECT
     b.penulis,
     b.cover,
     p.tanggal_pinjam,
-    p.tanggal_kembali
+    p.tanggal_kembali,
+    p.status
 FROM peminjaman p
 JOIN users u ON p.id_user = u.id_user
 JOIN detail_peminjaman dp ON p.id_peminjaman = dp.id_peminjaman
@@ -74,9 +75,10 @@ $aksi = $_GET['aksi'] ?? '';
                             <th class="px-4 py-3 border-b text-left font-semibold">No</th>
                             <th class="px-4 py-3 border-b text-left font-semibold">Nama Peminjam</th>
                             <th class="px-4 py-3 border-b text-left font-semibold">Judul Buku</th>
-                             <th class="px-4 py-3 border-b text-left font-semibold">Kategori</th>
+                            <th class="px-4 py-3 border-b text-left font-semibold">Kategori</th>
                             <th class="px-4 py-3 border-b text-left font-semibold">Tanggal Pinjam</th>
                             <th class="px-4 py-3 border-b text-left font-semibold">Tanggal Kembali</th>
+                            <th class="px-4 py-3 border-b text-left font-semibold">Status</th>
                             <th class="px-4 py-3 border-b text-left font-semibold">Aksi</th>
                         </tr>
                     </thead>
@@ -91,17 +93,18 @@ $aksi = $_GET['aksi'] ?? '';
                                                         echo "<td class='px-4 py-3'>{$row['kategori']}</td>";
                                                         echo "<td class='px-4 py-3'>".date('d-m-Y', strtotime($row['tanggal_pinjam']))."</td>";
                                                         echo "<td class='px-4 py-3'>".date('d-m-Y', strtotime($row['tanggal_kembali']))."</td>";
+                                                        echo "<td class='px-4 py-3'>".htmlspecialchars($row['status'])."</td>";
                                                         echo "<td class='px-4 py-3'>
-                        <button 
-                            onclick=\"setDetailData('{$row['id_peminjaman']}', '{$row['nama_user']}', '{$row['id_user']}', '{$row['tanggal_pinjam']}', '{$row['tanggal_kembali']}', '{$row['judul']}', '{$row['kategori']}', '{$row['penulis']}', '{$row['cover']}')\" 
-                            class='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition mr-2'
-                            data-judul='{$row['judul']}'
-                            data-kategori='{$row['kategori']}'
-                            data-penulis='{$row['penulis']}'
-                            data-cover='{$row['cover']}'
-                        >Detail</button>
-                        <button onclick=\"setReturnData('{$row['id_peminjaman']}', '{$row['nama_user']}', '{$row['id_user']}', '{$row['judul']}', '{$row['kategori']}', '{$row['penulis']}', '{$row['cover']}', '{$row['tanggal_pinjam']}', '{$row['tanggal_kembali']}')\" class='bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition'>Kembalikan Buku</button>
-                    </td>";
+                                                            <button 
+                                                                onclick=\"setDetailData('{$row['id_peminjaman']}', '{$row['nama_user']}', '{$row['id_user']}', '{$row['tanggal_pinjam']}', '{$row['tanggal_kembali']}', '{$row['judul']}', '{$row['kategori']}', '{$row['penulis']}', '{$row['cover']}')\" 
+                                                                class='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition mr-2'
+                                                                data-judul='{$row['judul']}'
+                                                                data-kategori='{$row['kategori']}'
+                                                                data-penulis='{$row['penulis']}'
+                                                                data-cover='{$row['cover']}'
+                                                            >Detail</button>
+                                                            <button onclick=\"setReturnData('{$row['id_peminjaman']}', '{$row['nama_user']}', '{$row['id_user']}', '{$row['judul']}', '{$row['kategori']}', '{$row['penulis']}', '{$row['cover']}', '{$row['tanggal_pinjam']}', '{$row['tanggal_kembali']}')\" class='bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition'>Kembalikan Buku</button>
+                                                        </td>";
                                                         echo "</tr>";
                                                         $no++;
                                                 }
