@@ -2,7 +2,7 @@
 session_start();
 include '../../model/koneksi.php';
 
-$pending = mysqli_query($koneksi, "SELECT p.id_peminjaman, p.id_user, u.nama, b.judul, b.penulis, b.kategori, p.tanggal_kembali, p.tanggal_pinjam, b.cover FROM peminjaman p JOIN users u ON p.id_user = u.id_user JOIN detail_peminjaman dp ON p.id_peminjaman = dp.id_peminjaman JOIN buku b ON dp.id_buku = b.id_buku WHERE p.status = 'pending' ORDER BY p.tanggal_pinjam ASC");
+$pending = mysqli_query($koneksi, "SELECT p.id_peminjaman, p.id_user, u.nama, b.judul, b.penulis, b.kategori, p.tanggal_kembali, p.tanggal_pinjam, b.cover FROM peminjaman p JOIN users u ON p.id_user = u.id_user JOIN detail_peminjaman dp ON p.id_peminjaman = dp.id_peminjaman JOIN buku b ON dp.id_buku = b.id_buku ORDER BY p.tanggal_pinjam ASC");
 
 ?>
 <!DOCTYPE html>
@@ -11,10 +11,25 @@ $pending = mysqli_query($koneksi, "SELECT p.id_peminjaman, p.id_user, u.nama, b.
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notifikasi Peminjaman - Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        perpusku1: '#1A3263',
+                        perpusku2: '#547792',
+                        perpusku3: '#FAB95B',
+                        perpusku4: '#E8E2DB',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="bg-perpusku4 min-h-screen">
-    <div class="max-w-3xl mx-auto mt-20 bg-white rounded-xl shadow-xl p-8">
+    <?php include '../partials/admin_sidebar.php'; ?>
+    <div id="mainContent" class="max-w-3xl mx-auto mt-20 bg-white rounded-xl shadow-xl p-8">
         <h2 class="text-2xl font-bold mb-6 text-perpusku1">Notifikasi Peminjaman Buku (Menunggu Konfirmasi)</h2>
         <?php if (mysqli_num_rows($pending) === 0): ?>
             <div class="text-center text-perpusku2 font-semibold">Tidak ada peminjaman yang menunggu konfirmasi.</div>

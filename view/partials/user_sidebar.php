@@ -69,7 +69,7 @@
                     <img src="../../public/image/dashboard.png" class="h-5 w-5 flex-shrink-0" alt="Dashboard">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Home</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
+                <a href="pinjam.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
                     <img src="../../public/image/book.png" class="h-5 w-5 flex-shrink-0" alt="Data Buku">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Pinjam Buku</span>
                 </a>

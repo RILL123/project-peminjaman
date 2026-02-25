@@ -25,19 +25,49 @@
 <?php 
 include '../partials/user_sidebar.php'; 
 include '../../model/koneksi.php';
-$buku = mysqli_query($koneksi, "SELECT * FROM buku ORDER BY created_at DESC");
+$search = isset($_GET['search']) ? mysqli_real_escape_string($koneksi, $_GET['search']) : '';
+$kategori = isset($_GET['kategori']) ? mysqli_real_escape_string($koneksi, $_GET['kategori']) : '';
+$where = [];
+if ($search) {
+    $where[] = "(judul LIKE '%$search%' OR penulis LIKE '%$search%')";
+}
+if ($kategori) {
+    $where[] = "kategori = '$kategori'";
+}
+$where_sql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+$buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_at DESC");
 ?>
 <main id="mainContent" class="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300 p-4 md:p-8">
+
     <!-- Welcome Card -->
     <div class="bg-gradient-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-3xl md:text-4xl font-bold mb-2">Selamat Datang !!</h2>
-                <p class="text-perpusku4 text-lg">Perpustakaan Yang Menyediakan Banyak Buku Yang bagus dan beragam</p>
+                <p class="text-perpusku4 text-lg">Perpustakaan Yang Menyediakan Banyak RBuku Yang bagus dan beragam</p>
             </div>
             <img src="../../public/image/perpusku.png" alt="Logo" class="hidden md:block w-24 h-24 rounded-full bg-white p-1" />
         </div>
     </div>
+            <!-- Search Engine -->
+        <form method="get" class="mb-8">
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="flex-1">
+                    <input type="text" name="search" class="w-full border-2 border-perpusku2 rounded-xl p-4 focus:border-perpusku1 focus:outline-none focus:ring-2 focus:ring-perpusku3 focus:ring-opacity-50 transition duration-300 shadow-sm" placeholder="Cari judul atau penulis..." value="<?= htmlspecialchars($search ?? '') ?>">
+                </div>
+                <div class="w-56">
+                    <select name="kategori" class="w-full border-2 border-perpusku2 rounded-xl p-4 focus:border-perpusku1 focus:outline-none focus:ring-2 focus:ring-perpusku3 focus:ring-opacity-50 transition duration-300 shadow-sm">
+                        <option value="">Semua Kategori</option>
+                        <option value="Fiksi" <?= $kategori == 'Fiksi' ? 'selected' : '' ?>>Fiksi</option>
+                        <option value="Non-Fiksi" <?= $kategori == 'Non-Fiksi' ? 'selected' : '' ?>>Non-Fiksi</option>
+                        <option value="Komik" <?= $kategori == 'Komik' ? 'selected' : '' ?>>Komik</option>
+                        <option value="Ensiklopedia" <?= $kategori == 'Ensiklopedia' ? 'selected' : '' ?>>Ensiklopedia</option>
+                        <option value="Novel" <?= $kategori == 'Novel' ? 'selected' : '' ?>>Novel</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-gradient-to-r from-perpusku2 to-perpusku1 hover:from-perpusku1 hover:to-perpusku2 text-white px-8 py-4 rounded-xl font-bold transition duration-300 shadow-lg hover:shadow-xl">Cari</button>
+            </div>
+        </form>
     <!-- Buku Card Section -->
     <div class="mb-8">
         <h3 class="text-2xl font-bold text-perpusku1 mb-4">Daftar Buku</h3>
@@ -79,7 +109,7 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku ORDER BY created_at DESC");
     <div id="modalPinjam" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full relative">
             <button onclick="closeModal('modalPinjam')" class="absolute top-3 right-3 text-perpusku1 text-xl font-bold">&times;</button>
-            <form id="formPinjam" method="POST" action="../../controller/aksi_peminjaman.php">
+            <form id="formPinjam" method="POST" action="../../controller/aksi_peminjaman_user.php">
                 <input type="hidden" name="id_buku" id="pinjam_id_buku">
                 <input type="hidden" name="aksi" value="pinjam">
                 <div class="mb-4">
