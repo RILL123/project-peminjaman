@@ -1,9 +1,18 @@
 <?php
+
 session_start();
 
-// Pastikan user adalah admin
+// Cek apakah user sudah login
+if (!isset($_SESSION['id_user']) || !isset($_SESSION['role'])) {
     header('Location: ../../public/login.php');
     exit;
+}
+
+// Cek role admin jika perlu
+if ($_SESSION['role'] !== 'admin') {
+    header('Location: ../../public/login.php');
+    exit;
+}
 
 include '../model/koneksi.php';
 
@@ -40,15 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $alasan = $_POST['alasan'] ?? '';
         if ($id_peminjaman && $aksi) {
             if ($aksi === 'approve') {
-                $update_query = "UPDATE peminjaman SET status = 'approved' WHERE id_peminjaman = $id_peminjaman";
+                // Tidak ada kolom status, jadi tidak perlu update status
                 $pesan = 'Peminjaman berhasil diterima';
-                if (mysqli_query($koneksi, $update_query)) {
-                    $_SESSION['message'] = $pesan;
-                    $_SESSION['message_type'] = 'success';
-                } else {
-                    $_SESSION['message'] = 'Gagal memperbarui peminjaman: ' . mysqli_error($koneksi);
-                    $_SESSION['message_type'] = 'error';
-                }
+                $_SESSION['message'] = $pesan;
+                $_SESSION['message_type'] = 'success';
             } else if ($aksi === 'reject') {
                 // Ambil id_buku dari detail_peminjaman
                 $result_buku = mysqli_query($koneksi, "SELECT id_buku FROM detail_peminjaman WHERE id_peminjaman = $id_peminjaman");
@@ -74,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi'])) {
     $aksi = $_POST['aksi'];
     $id_buku = mysqli_real_escape_string($koneksi, $_POST['id_buku'] ?? '');
@@ -82,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi'])) {
     $tanggal_pinjam = date('Y-m-d');
     if ($aksi === 'terima') {
         if ($id_user && $id_buku && $tanggal_kembali) {
-            $query1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali, status) VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali', 'approved')";
+            $query1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali) VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali')";
             if (mysqli_query($koneksi, $query1)) {
                 $id_peminjaman = mysqli_insert_id($koneksi);
                 $query2 = "INSERT INTO detail_peminjaman (id_peminjaman, id_buku) VALUES ('$id_peminjaman', '$id_buku')";

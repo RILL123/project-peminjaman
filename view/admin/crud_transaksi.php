@@ -66,7 +66,7 @@ include '../../model/koneksi.php';
         </div>
     </div>
     <script>
-    // --- Autocomplete Peminjam (user) ---
+    // --- Autocomplete Peminjam ---
     const userInput = document.getElementById('userInput');
     const userIdHidden = document.getElementById('userIdHidden');
     const userSuggestions = document.getElementById('userSuggestions');

@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$data = mysqli_fetch_assoc($result_admin);
 			$_SESSION['login'] = true;
 			$_SESSION['username'] = $data['username'];
+			$_SESSION['id_user'] = $data['id_admin']; // Pastikan kolom id_admin ada di tabel admin
 			$_SESSION['role'] = 'admin';
 			header('Location: ../view/admin/dashboard.php');
 			exit;
@@ -31,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$data = mysqli_fetch_assoc($result_users);
 			$_SESSION['login'] = true;
 			$_SESSION['username'] = $data['username'];
+			$_SESSION['id_user'] = $data['id_user']; // Pastikan kolom id_user ada di tabel users
 			// Deteksi role dari kolom role jika ada, default ke 'user'
 			$_SESSION['role'] = isset($data['role']) ? $data['role'] : 'user';
 			if ($_SESSION['role'] === 'admin') {

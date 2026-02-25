@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi']) && $_POST['ak
     $id_user = $_SESSION['id_user'] ?? null;
     $tanggal_pinjam = date('Y-m-d');
     if ($id_user && $id_buku && $tanggal_kembali) {
-        $query1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali, status) VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali', 'pending')";
+        $query1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali) VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali')";
         if (mysqli_query($koneksi, $query1)) {
             $id_peminjaman = mysqli_insert_id($koneksi);
             $query2 = "INSERT INTO detail_peminjaman (id_peminjaman, id_buku) VALUES ('$id_peminjaman', '$id_buku')";
