@@ -35,7 +35,7 @@ $aksi = $_GET['aksi'] ?? '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Peminjaman - Admin</title>
+    <title>Kelola Peminjaman</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

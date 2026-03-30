@@ -18,7 +18,7 @@
             }
         }
     </script>
-    <title>Welcome admin!</title>
+    <title>Dashboard</title>
     <link rel="icon" type="image/png" href="../../public/image/perpusku.png">
 </head>
 <body class="bg-perpusku4 min-h-screen">
@@ -68,7 +68,13 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Peminjaman Aktif</p>
-                                <h3 class="text-3xl font-bold text-white">28</h3>
+                                 <?php
+                                include '../../model/koneksi.php';
+                                $result = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM peminjaman");
+                                $row = mysqli_fetch_assoc($result);
+                                $total_peminjaman = $row['total'];
+                                ?>
+                                <h3 class="text-3xl font-bold text-white"><?= $total_peminjaman ?></h3>
                             </div>
                             <div class=" rounded-full p-4">
                                 <img src="../../public/image/peminjam.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
@@ -80,7 +86,13 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Total User</p>
-                                <h3 class="text-3xl font-bold text-white">156</h3>
+                                <?php
+                                include '../../model/koneksi.php';
+                                $result = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM users");
+                                $row = mysqli_fetch_assoc($result);
+                                $total_user = $row['total'];
+                                ?>
+                                <h3 class="text-3xl font-bold text-white"><?= $total_user ?></h3>
                             </div>
                             <div class="bg-opacity-10 rounded-full p-4">
                                 <img src="../../public/image/account.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
@@ -92,7 +104,13 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Tertunda</p>
-                                <h3 class="text-3xl font-bold text-white">5</h3>
+                                 <?php
+                                include '../../model/koneksi.php';
+                                $result = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM request_peminjaman");
+                                $row = mysqli_fetch_assoc($result);
+                                $total_request = $row['total'];
+                                ?>
+                                <h3 class="text-3xl font-bold text-white"><?= $total_request ?></h3>
                             </div>
                             <div class="bg-opacity-10 rounded-full p-4">
                                 <img src="../../public/image/tunggu.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />

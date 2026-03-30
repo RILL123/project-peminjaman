@@ -2,7 +2,8 @@
 session_start();
 include '../../model/koneksi.php';
 
-$pending = mysqli_query($koneksi, "SELECT p.id_peminjaman, p.id_user, u.nama, b.judul, b.penulis, b.kategori, p.tanggal_kembali, p.tanggal_pinjam, b.cover FROM peminjaman p JOIN users u ON p.id_user = u.id_user JOIN detail_peminjaman dp ON p.id_peminjaman = dp.id_peminjaman JOIN buku b ON dp.id_buku = b.id_buku ORDER BY p.tanggal_pinjam ASC");
+// Ambil request peminjaman yang statusnya pending
+$pending = mysqli_query($koneksi, "SELECT r.id_request, r.id_user, u.nama, r.id_buku, b.judul, r.tanggal_request, r.status, r.alasan_penolakan FROM request_peminjaman r JOIN users u ON r.id_user = u.id_user JOIN buku b ON r.id_buku = b.id_buku WHERE r.status = 'pending' ORDER BY r.tanggal_request ASC");
 
 ?>
 <!DOCTYPE html>
@@ -10,7 +11,7 @@ $pending = mysqli_query($koneksi, "SELECT p.id_peminjaman, p.id_user, u.nama, b.
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifikasi Peminjaman - Admin</title>
+    <title>Notifikasi Peminjaman</title>
      <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -26,43 +27,68 @@ $pending = mysqli_query($koneksi, "SELECT p.id_peminjaman, p.id_user, u.nama, b.
             }
         }
     </script>
+    <link rel="icon" type="image/png" href="../../public/image/perpusku.png">
 </head>
 <body class="bg-perpusku4 min-h-screen">
     <?php include '../partials/admin_sidebar.php'; ?>
-    <div id="mainContent" class="max-w-3xl mx-auto mt-20 bg-white rounded-xl shadow-xl p-8">
-        <h2 class="text-2xl font-bold mb-6 text-perpusku1">Notifikasi Peminjaman Buku (Menunggu Konfirmasi)</h2>
-        <?php if (mysqli_num_rows($pending) === 0): ?>
-            <div class="text-center text-perpusku2 font-semibold">Tidak ada peminjaman yang menunggu konfirmasi.</div>
-        <?php else: ?>
-            <table class="min-w-full mb-8">
-                <thead class="bg-gradient-to-r from-perpusku1 to-perpusku2 text-white">
-                    <tr>
-                        <th class="px-4 py-3 border-b text-left font-semibold">Nama</th>
-                        <th class="px-4 py-3 border-b text-left font-semibold">Judul Buku</th>
-                        <th class="px-4 py-3 border-b text-left font-semibold">Tanggal Pinjam</th>
-                        <th class="px-4 py-3 border-b text-left font-semibold">Tanggal Kembali</th>
-                        <th class="px-4 py-3 border-b text-left font-semibold">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                <?php while ($row = mysqli_fetch_assoc($pending)): ?>
-                    <tr>
-                        <td class="px-4 py-3"><?= htmlspecialchars($row['nama']) ?></td>
-                        <td class="px-4 py-3"><?= htmlspecialchars($row['judul']) ?></td>
-                        <td class="px-4 py-3"><?= htmlspecialchars($row['tanggal_pinjam']) ?></td>
-                        <td class="px-4 py-3"><?= htmlspecialchars($row['tanggal_kembali']) ?></td>
-                        <td class="px-4 py-3">
-                            <form method="POST" action="../../controller/aksi_peminjaman.php" style="display:inline-block;">
-                                <input type="hidden" name="id_peminjaman" value="<?= $row['id_peminjaman'] ?>">
-                                <button type="submit" name="aksi" value="approve" class="bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg px-4 py-2 shadow transition mr-2">Terima</button>
-                                <button type="submit" name="aksi" value="reject" class="bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg px-4 py-2 shadow transition">Tolak</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
+    <div id="mainContent" class="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300 p-4 md:p-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Notifikasi Request Peminjaman Buku</h2>
+                <form method="POST" action="../../controller/aksi_peminjaman.php">
+                    <button type="submit" name="aksi" value="approve_all" class="bg-perpusku3 hover:bg-yellow-400 text-perpusku1 font-semibold px-4 py-2 rounded shadow">Terima Semua</button>
+                </form>
+            </div>
+            <?php if (mysqli_num_rows($pending) === 0): ?>
+                <div class="text-center text-perpusku2 font-semibold">Tidak ada request peminjaman yang menunggu konfirmasi.</div>
+            <?php else: ?>
+            <div class="bg-white rounded-xl shadow-xl p-6 md:p-8 mb-8">
+                <div class="font-semibold text-lg mb-4 text-gray-700 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" /></svg>
+                    Daftar Request Peminjaman
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm text-left text-gray-700">
+                        <thead class="bg-gray-100 text-gray-700 uppercase">
+                            <tr>
+                                <th class="py-2 px-3">Nama</th>
+                                <th class="py-2 px-3">Judul Buku</th>
+                                <th class="py-2 px-3">Tanggal Request</th>
+                                <th class="py-2 px-3">Status</th>
+                                <th class="py-2 px-3">Alasan Penolakan</th>
+                                <th class="py-2 px-3">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($pending)): ?>
+                            <tr class="border-b hover:bg-blue-50">
+                                <td class="py-2 px-3"><?= htmlspecialchars($row['nama']) ?></td>
+                                <td class="py-2 px-3"><?= htmlspecialchars($row['judul']) ?></td>
+                                <td class="py-2 px-3"><?= htmlspecialchars($row['tanggal_request']) ?></td>
+                                <td class="py-2 px-3">
+                                    <span class="inline-block px-2 py-1 rounded text-xs font-semibold <?= $row['status'] == 'pending' ? 'bg-yellow-100 text-yellow-700' : ($row['status'] == 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700') ?>">
+                                        <?= htmlspecialchars($row['status']) ?>
+                                    </span>
+                                </td>
+                                <td class="py-2 px-3 text-xs text-gray-500"><?= htmlspecialchars($row['alasan_penolakan']) ?></td>
+                                <td class="py-2 px-3 flex gap-2">
+                                    <form method="POST" action="../../controller/aksi_peminjaman.php" style="display:inline-block;">
+                                        <input type="hidden" name="id_request" value="<?= $row['id_request'] ?>">
+                                        <button type="submit" name="aksi" value="approve" class="bg-perpusku1 hover:bg-perpusku2 text-white px-3 py-1 rounded shadow text-xs">Terima</button>
+                                    </form>
+                                    <form method="POST" action="../../controller/aksi_peminjaman.php" style="display:inline-block;">
+                                        <input type="hidden" name="id_request" value="<?= $row['id_request'] ?>">
+                                        <button type="submit" name="aksi" value="reject" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-xs">Tolak</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
     </div>
 </body>
 </html>

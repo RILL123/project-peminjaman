@@ -19,7 +19,39 @@ include '../model/koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $aksi = $_POST['aksi'] ?? null;
-    if ($aksi === 'tambah') {
+    if ($aksi === 'approve_all') {
+        // Ambil semua request pending
+        $result = mysqli_query($koneksi, "SELECT * FROM request_peminjaman WHERE status = 'pending'");
+        $berhasil = 0;
+        $gagal = 0;
+        while ($req = mysqli_fetch_assoc($result)) {
+            $id_user = $req['id_user'];
+            $id_buku = $req['id_buku'];
+            $tanggal_pinjam = date('Y-m-d');
+            $tanggal_kembali = date('Y-m-d', strtotime('+3 days'));
+            // Insert ke peminjaman
+            $q1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali) VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali')";
+            if (mysqli_query($koneksi, $q1)) {
+                $id_peminjaman = mysqli_insert_id($koneksi);
+                $q2 = "INSERT INTO detail_peminjaman (id_peminjaman, id_buku) VALUES ('$id_peminjaman', '$id_buku')";
+                if (mysqli_query($koneksi, $q2)) {
+                    $update_stok = "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0";
+                    mysqli_query($koneksi, $update_stok);
+                    // Update status request jadi approved
+                    mysqli_query($koneksi, "UPDATE request_peminjaman SET status = 'approved' WHERE id_request = '{$req['id_request']}'");
+                    $berhasil++;
+                } else {
+                    $gagal++;
+                }
+            } else {
+                $gagal++;
+            }
+        }
+        $_SESSION['message'] = "$berhasil request berhasil dipindahkan ke peminjaman. $gagal gagal.";
+        $_SESSION['message_type'] = 'success';
+        header('Location: ../view/admin/notifikasi.php');
+        exit;
+    } else if ($aksi === 'tambah') {
         $id_user = mysqli_real_escape_string($koneksi, $_POST['id_user']);
         $id_buku = mysqli_real_escape_string($koneksi, $_POST['id_buku']);
         $tanggal_pinjam = mysqli_real_escape_string($koneksi, $_POST['tanggal_pinjam']);

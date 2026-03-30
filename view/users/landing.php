@@ -44,7 +44,7 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_a
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-3xl md:text-4xl font-bold mb-2">Selamat Datang !!</h2>
-                <p class="text-perpusku4 text-lg">Perpustakaan Yang Menyediakan Banyak RBuku Yang bagus dan beragam</p>
+                <p class="text-perpusku4 text-lg">Perhatian!! Buku hanya boleh dipinjam maximal 3 hari</p>
             </div>
             <img src="../../public/image/perpusku.png" alt="Logo" class="hidden md:block w-24 h-24 rounded-full bg-white p-1" />
         </div>
