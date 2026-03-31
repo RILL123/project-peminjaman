@@ -33,9 +33,21 @@
             transition: all 0.3s ease;
             background-color: rgba(255, 255, 255, 0.95);
         }
+        /* Pastikan input tidak menutupi icon */
         .input-field:focus {
             background-color: #ffffff;
             transform: translateY(-2px);
+        }
+        /* Pastikan icon selalu di atas input */
+        .input-icon {
+            z-index: 10;
+            pointer-events: none;
+            transition: filter 0.3s;
+        }
+        /* Efek warna pada icon saat input aktif (Tailwind: filter, drop-shadow, hue-rotate) */
+        .input-field:focus ~ .input-icon,
+        .input-field:not(:placeholder-shown) ~ .input-icon {
+            filter: drop-shadow(0 0 2px #547792) brightness(1.2) hue-rotate(10deg);
         }
         .btn-login {
             transition: all 0.3s ease;
@@ -106,16 +118,16 @@
                     <div class="relative">
                         <label for="username" class="block text-perpusku1 font-semibold text-sm mb-2 ml-1">Username</label>
                         <div class="relative">
-                            <img src="image/user.png" class="absolute left-4 top-3.5 text-perpusku2 w-5 h-5">
                             <input 
                                 type="text" 
                                 id="username" 
                                 name="username" 
                                 required 
-                                class="input-field w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-perpusku1 placeholder-gray-400 focus:border-perpusku1 focus:ring-0 focus:outline-none"
-                                placeholder="Masukkan username Anda"
+                                class="input-field w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-perpusku1 placeholder-gray-400 focus:border-perpusku1 focus:ring-0 focus:outline-none" 
+                                placeholder="Masukkan username Anda" 
                                 autocomplete="username"
                             >
+                            <img src="image/user.png" class="input-icon absolute left-4 top-3.5 w-5 h-5" alt="icon user">
                         </div>
                     </div>
 
@@ -123,16 +135,16 @@
                     <div class="relative">
                         <label for="password" class="block text-perpusku1 font-semibold text-sm mb-2 ml-1">Password</label>
                         <div class="relative">
-                            <img src="image/padlock.png" class="absolute left-4 top-3.5 text-perpusku2 w-5 h-5">
                             <input 
                                 type="password" 
                                 id="password" 
                                 name="password" 
                                 required 
-                                class="input-field w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-perpusku1 placeholder-gray-400 focus:border-perpusku1 focus:ring-0 focus:outline-none"
-                                placeholder="Masukkan password Anda"
+                                class="input-field w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-perpusku1 placeholder-gray-400 focus:border-perpusku1 focus:ring-0 focus:outline-none" 
+                                placeholder="Masukkan password Anda" 
                                 autocomplete="current-password"
                             >
+                            <img src="image/padlock.png" class="input-icon absolute left-4 top-3.5 w-5 h-5" alt="icon password">
                         </div>
                     </div>
 
