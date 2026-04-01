@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$_SESSION['username'] = $data['username'];
 			$_SESSION['id_user'] = $data['id_admin']; // Pastikan kolom id_admin ada di tabel admin
 			$_SESSION['role'] = 'admin';
+			include_once '../model/log_helper.php';
+			tambah_log($koneksi, $data['id_admin'], 'Login Admin', 'Admin login ke sistem');
 			header('Location: ../view/admin/dashboard.php');
 			exit;
 		}
@@ -35,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$_SESSION['id_user'] = $data['id_user']; // Pastikan kolom id_user ada di tabel users
 			// Deteksi role dari kolom role jika ada, default ke 'user'
 			$_SESSION['role'] = isset($data['role']) ? $data['role'] : 'user';
+			include_once '../model/log_helper.php';
+			tambah_log($koneksi, $data['id_user'], 'Login User', 'User login ke sistem');
 			if ($_SESSION['role'] === 'admin') {
 				header('Location: ../view/admin/dashboard.php');
 				exit;

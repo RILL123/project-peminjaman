@@ -119,18 +119,50 @@
                     </div>
                 </div>
 
-                <!-- Main Content Row -->
+                <!-- Main -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Recent Activity (2 columns on large screens) -->
+                    <!-- Log Aktivitas -->
                     <div class="lg:col-span-2 bg-white rounded-xl shadow-md p-6">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-xl font-bold text-perpusku1">Aktivitas Terbaru</h3>
-                            <a href="riwayat.php" class="text-perpusku1 hover:text-perpusku2 font-semibold text-sm">Lihat Semua →</a>
                         </div>
                         <div class="space-y-4">
-                            <div class="flex items-center p-3 bg-perpusku4 rounded-lg hover:bg-opacity-75 transition">
-                                
+                            <?php
+                            include '../../model/koneksi.php';
+                            $log_query = "SELECT l.*, 
+                                u.nama AS nama_user,
+                                b.judul AS judul_buku
+                                FROM log_aktivitas l
+                                LEFT JOIN users u ON l.id_user = u.id_user
+                                LEFT JOIN buku b ON l.id_buku = b.id_buku
+                                ORDER BY l.tanggal DESC
+                                LIMIT 10";
+                            $log_result = mysqli_query($koneksi, $log_query);
+                            if (mysqli_num_rows($log_result) > 0):
+                                while ($log = mysqli_fetch_assoc($log_result)):
+                            ?>
+                            <div class="flex flex-col md:flex-row md:items-center p-3 bg-perpusku4 rounded-lg hover:bg-opacity-75 transition">
+                                <div class="flex-1">
+                                    <div class="font-semibold text-perpusku1">
+                                        <?= htmlspecialchars($log['aktivitas']) ?>
+                                    </div>
+                                    <div class="text-sm text-gray-600">
+                                        <?= htmlspecialchars($log['keterangan']) ?>
+                                        <?php if ($log['judul_buku']): ?>
+                                            <span class="ml-2 text-perpusku2">[<?= htmlspecialchars($log['judul_buku']) ?>]</span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col md:items-end md:w-48 mt-2 md:mt-0">
+                                    <span class="text-xs text-gray-500">Oleh: <?= $log['nama_user'] ? htmlspecialchars($log['nama_user']) : 'Admin' ?></span>
+                                    <span class="text-xs text-gray-400"><?= date('d M Y H:i', strtotime($log['tanggal'])) ?></span>
+                                </div>
                             </div>
+                            <?php endwhile; else: ?>
+                            <div class="flex items-center p-3 bg-perpusku4 rounded-lg">
+                                <span class="text-gray-500">Belum ada aktivitas.</span>
+                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
