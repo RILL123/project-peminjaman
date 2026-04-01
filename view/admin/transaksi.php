@@ -104,6 +104,7 @@ $aksi = $_GET['aksi'] ?? '';
                                                                 <input type='hidden' name='id_buku' value='{$row['id_buku']}'>
                                                                 <button type='submit' class='bg-perpusku1 text-white px-3 py-1 rounded shadow text-xs font-semibold transition'>Kembalikan Buku</button>
                                                             </form>
+                                                            <button type='button' onclick='printStrukJS(" . json_encode($row['id_peminjaman']) . ", " . json_encode($row['nama_user']) . ", " . json_encode($row['id_user']) . ", " . json_encode($row['judul']) . ", " . json_encode($row['kategori']) . ", " . json_encode($row['penulis']) . ", " . json_encode($row['tanggal_pinjam']) . ", " . json_encode($row['tanggal_kembali']) . ", " . json_encode($row['cover']) . ")' class='bg-perpusku3 text-perpusku1 px-3 py-1 rounded shadow text-xs font-semibold transition hover:bg-yellow-400'>Print</button>
                                                         </td>";
                                                         echo "</tr>";
                                                         $no++;
@@ -127,6 +128,31 @@ $aksi = $_GET['aksi'] ?? '';
         }
         </style>
         </div>
+<script>
+function printStrukJS(id, nama_user, id_user, judul, kategori, penulis, tanggal_pinjam, tanggal_kembali, cover) {
+    let strukHTML = `
+        <div style='font-family:sans-serif;padding:30px;max-width:350px;'>
+            <h2 style='color:#1A3263;margin-bottom:16px;'>Struk Transaksi Peminjaman Buku</h2>
+            <div style='margin-bottom:8px;'><b>ID Peminjaman:</b> ${id}</div>
+            <div style='margin-bottom:8px;'><b>Nama Peminjam:</b> ${nama_user} <span style='font-size:11px;color:#547792;'>(ID: ${id_user})</span></div>
+            <div style='margin-bottom:8px;'><b>Judul Buku:</b> ${judul}</div>
+            <div style='margin-bottom:8px;'><b>Kategori:</b> ${kategori}</div>
+            <div style='margin-bottom:8px;'><b>Penulis:</b> ${penulis}</div>
+            <div style='margin-bottom:8px;'><b>Tanggal Pinjam:</b> ${new Date(tanggal_pinjam).toLocaleDateString('id-ID')}</div>
+            <div style='margin-bottom:8px;'><b>Tanggal Kembali:</b> ${new Date(tanggal_kembali).toLocaleDateString('id-ID')}</div>
+            <div style='margin-bottom:8px;'><b>Dicetak pada:</b> ${new Date().toLocaleString('id-ID')}</div>
+            <div style='margin-bottom:8px;'><b>Cover:</b> ` + (cover && cover !== 'null' && cover !== '' ? `<img src='../../public/cover/${cover}' style='height:60px;margin-top:8px;border-radius:8px;border:1px solid #FAB95B;'>` : '<span style="color:#547792;">(tidak ada cover)</span>') + `</div>
+        </div>
+    `;
+    let win = window.open('', 'PrintWindow', 'width=400,height=600');
+    win.document.write(`
+        <html><head><title>Struk Transaksi Peminjaman Buku</title></head><body>${strukHTML}</body></html>
+    `);
+    win.document.close();
+    win.focus();
+    win.print();
+}
+</script>
 
     <script>
     </script>
