@@ -160,6 +160,11 @@
                 <!-- Divider -->
                 <div class="divider-line h-px my-8"></div>
 
+                <!-- Register Link -->
+                <div class="text-center mb-6">
+                    <p class="text-sm text-gray-600">Belum punya akun? <a href="register.php" class="text-perpusku1 font-semibold hover:text-perpusku2 transition">Daftar di sini</a></p>
+                </div>
+
                 <!-- Footer Info -->
                 <div class="text-center space-y-2">
                     <p class="text-xs text-gray-500">Akses Perpustakaan Digital Anda</p>

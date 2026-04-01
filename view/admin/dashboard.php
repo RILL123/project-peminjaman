@@ -123,7 +123,10 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Recent Activity (2 columns on large screens) -->
                     <div class="lg:col-span-2 bg-white rounded-xl shadow-md p-6">
-                        <h3 class="text-xl font-bold text-perpusku1 mb-4">Aktivitas Terbaru</h3>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-perpusku1">Aktivitas Terbaru</h3>
+                            <a href="riwayat.php" class="text-perpusku1 hover:text-perpusku2 font-semibold text-sm">Lihat Semua →</a>
+                        </div>
                         <div class="space-y-4">
                             <div class="flex items-center p-3 bg-perpusku4 rounded-lg hover:bg-opacity-75 transition">
                                 
