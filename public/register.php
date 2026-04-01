@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -446,4 +446,3 @@
     </div>
 </body>
 </html>
->>>>>>> 57871de (menambahkan registerasi)
