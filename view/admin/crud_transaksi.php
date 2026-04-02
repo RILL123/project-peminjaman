@@ -8,6 +8,7 @@ include '../../model/koneksi.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Data Peminjaman</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../public/realtime.js"></script>
     <script>
         tailwind.config = {
             theme: {

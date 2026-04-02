@@ -20,6 +20,7 @@
     </script>
     <title>Dashboard</title>
     <link rel="icon" type="image/png" href="../../public/image/perpusku.png">
+    <script src="../../public/realtime.js"></script>
 </head>
 <body class="bg-perpusku4 min-h-screen">
         <?php include '../partials/admin_sidebar.php'; ?>
@@ -56,7 +57,7 @@
                                 $row = mysqli_fetch_assoc($result);
                                 $total_buku = $row['total'];
                                 ?>
-                                <h3 class="text-3xl font-bold text-white"><?= $total_buku ?></h3>
+                                <h3 class="text-3xl font-bold text-white" id="total-buku"><?= $total_buku ?></h3>
                             </div>
                             <div class=" rounded-full p-4">
                                 <img src="../../public/image/books.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
@@ -74,7 +75,7 @@
                                 $row = mysqli_fetch_assoc($result);
                                 $total_peminjaman = $row['total'];
                                 ?>
-                                <h3 class="text-3xl font-bold text-white"><?= $total_peminjaman ?></h3>
+                                <h3 class="text-3xl font-bold text-white" id="total-peminjaman"><?= $total_peminjaman ?></h3>
                             </div>
                             <div class=" rounded-full p-4">
                                 <img src="../../public/image/peminjam.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
@@ -92,7 +93,7 @@
                                 $row = mysqli_fetch_assoc($result);
                                 $total_user = $row['total'];
                                 ?>
-                                <h3 class="text-3xl font-bold text-white"><?= $total_user ?></h3>
+                                <h3 class="text-3xl font-bold text-white" id="total-user"><?= $total_user ?></h3>
                             </div>
                             <div class="bg-opacity-10 rounded-full p-4">
                                 <img src="../../public/image/account.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
@@ -110,7 +111,7 @@
                                 $row = mysqli_fetch_assoc($result);
                                 $total_request = $row['total'];
                                 ?>
-                                <h3 class="text-3xl font-bold text-white"><?= $total_request ?></h3>
+                                <h3 class="text-3xl font-bold text-white" id="total-request"><?= $total_request ?></h3>
                             </div>
                             <div class="bg-opacity-10 rounded-full p-4">
                                 <img src="../../public/image/tunggu.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
@@ -126,7 +127,7 @@
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-xl font-bold text-perpusku1">Aktivitas Terbaru</h3>
                         </div>
-                        <div class="space-y-4">
+                        <div id="logs-container" class="space-y-4">
                             <?php
                             include '../../model/koneksi.php';
                             $log_query = "SELECT l.*, 
@@ -136,7 +137,7 @@
                                 LEFT JOIN users u ON l.id_user = u.id_user
                                 LEFT JOIN buku b ON l.id_buku = b.id_buku
                                 ORDER BY l.tanggal DESC
-                                LIMIT 10";
+                                LIMIT 2";
                             $log_result = mysqli_query($koneksi, $log_query);
                             if (mysqli_num_rows($log_result) > 0):
                                 while ($log = mysqli_fetch_assoc($log_result)):
@@ -163,6 +164,11 @@
                                 <span class="text-gray-500">Belum ada aktivitas.</span>
                             </div>
                             <?php endif; ?>
+                        </div>
+                        <div class="mt-4">
+                            <a href="log_aktivitas.php" class="inline-block w-full text-center px-4 py-2 bg-perpusku1 text-white rounded-lg hover:bg-perpusku2 transition font-semibold">
+                                Lihat Semua
+                            </a>
                         </div>
                     </div>
 

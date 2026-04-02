@@ -21,6 +21,7 @@ $buku_count = mysqli_num_rows($buku);
 	<script src="https://cdn.tailwindcss.com"></script>
 	<title>Data Buku</title>
 	<link rel="icon" type="image/png" href="../../public/image/perpusku.png">
+	<script src="../../public/realtime.js"></script>
     <script>
 		tailwind.config = {
 			theme: {

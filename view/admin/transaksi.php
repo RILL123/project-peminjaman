@@ -38,6 +38,7 @@ $aksi = $_GET['aksi'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Peminjaman</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../public/realtime.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -98,11 +99,11 @@ $aksi = $_GET['aksi'] ?? '';
                                                         echo "<td class='py-2 px-3'>".date('d-m-Y', strtotime($row['tanggal_pinjam']))."</td>";
                                                         echo "<td class='py-2 px-3'>".date('d-m-Y', strtotime($row['tanggal_kembali']))."</td>";
                                                         echo "<td class='py-2 px-3 flex gap-2'>
-                                                            <form action='../../controller/aksi_peminjaman.php' method='POST' style='display:inline;'>
+                                                            <form id='form-kembalikan-{$row['id_peminjaman']}' action='../../controller/aksi_peminjaman.php' method='POST' style='display:inline;'>
                                                                 <input type='hidden' name='aksi' value='kembalikan'>
                                                                 <input type='hidden' name='id_peminjaman' value='{$row['id_peminjaman']}'>
                                                                 <input type='hidden' name='id_buku' value='{$row['id_buku']}'>
-                                                                <button type='submit' class='bg-perpusku1 text-white px-3 py-1 rounded shadow text-xs font-semibold transition'>Kembalikan Buku</button>
+                                                                <button type='button' onclick='showConfirmModal({$row['id_peminjaman']}, \"" . htmlspecialchars($row['judul']) . "\")' class='bg-perpusku1 text-white px-3 py-1 rounded shadow text-xs font-semibold transition hover:bg-perpusku2'>Kembalikan Buku</button>
                                                             </form>
                                                             <button type='button' onclick='printStrukJS(" . json_encode($row['id_peminjaman']) . ", " . json_encode($row['nama_user']) . ", " . json_encode($row['id_user']) . ", " . json_encode($row['judul']) . ", " . json_encode($row['kategori']) . ", " . json_encode($row['penulis']) . ", " . json_encode($row['tanggal_pinjam']) . ", " . json_encode($row['tanggal_kembali']) . ", " . json_encode($row['cover']) . ")' class='bg-perpusku3 text-perpusku1 px-3 py-1 rounded shadow text-xs font-semibold transition hover:bg-yellow-400'>Print</button>
                                                         </td>";
@@ -126,9 +127,75 @@ $aksi = $_GET['aksi'] ?? '';
         .animate-fadeIn {
             animation: fadeIn 0.5s cubic-bezier(.4,0,.2,1);
         }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-animate {
+            animation: modalSlideIn 0.3s ease-out;
+        }
         </style>
+
+        <!-- Confirmation Modal -->
+        <div id="confirmModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-2xl p-6 max-w-sm mx-4 modal-animate">
+                <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-yellow-100">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0-6a4 4 0 110 8 4 4 0 010-8z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-center text-perpusku1 mb-2">Kembalikan Buku?</h3>
+                <p class="text-sm text-gray-600 text-center mb-1">Buku:</p>
+                <p class="text-sm font-semibold text-center text-perpusku1 mb-6" id="modalBookTitle"></p>
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeConfirmModal()" class="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 transition">
+                        Batal
+                    </button>
+                    <button type="button" onclick="submitReturnBook()" class="flex-1 px-4 py-2 bg-perpusku1 text-white rounded-lg font-semibold hover:bg-perpusku2 transition">
+                        Ya, Kembalikan
+                    </button>
+                </div>
+            </div>
+        </div>
         </div>
 <script>
+let currentPeminjamanId = null;
+
+function showConfirmModal(peminjamanId, bookTitle) {
+    currentPeminjamanId = peminjamanId;
+    document.getElementById('modalBookTitle').textContent = bookTitle;
+    document.getElementById('confirmModal').classList.remove('hidden');
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirmModal').classList.add('hidden');
+    currentPeminjamanId = null;
+}
+
+function submitReturnBook() {
+    if (currentPeminjamanId) {
+        const form = document.getElementById('form-kembalikan-' + currentPeminjamanId);
+        if (form) {
+            form.submit();
+        }
+    }
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('confirmModal');
+    if (event.target === modal) {
+        closeConfirmModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeConfirmModal();
+    }
+});
+
 function printStrukJS(id, nama_user, id_user, judul, kategori, penulis, tanggal_pinjam, tanggal_kembali, cover) {
     let strukHTML = `
         <div style='font-family:sans-serif;padding:30px;max-width:350px;'>
@@ -160,3 +227,4 @@ function printStrukJS(id, nama_user, id_user, judul, kategori, penulis, tanggal_
 </html>
 
 <?php mysqli_close($koneksi); ?>
+  

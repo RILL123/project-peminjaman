@@ -15,6 +15,7 @@ if ($_SESSION['role'] !== 'admin') {
 }
 
 include '../model/koneksi.php';
+include '../model/log_helper.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -27,9 +28,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_buku = $_POST['id_buku'] ?? null;
 
         if ($id_peminjaman && $id_buku) {
+            // Ambil data untuk log
+            $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
+            
             mysqli_query($koneksi, "UPDATE buku SET stok = stok + 1 WHERE id_buku = '$id_buku'");
             mysqli_query($koneksi, "DELETE FROM detail_peminjaman WHERE id_peminjaman = '$id_peminjaman' AND id_buku = '$id_buku'");
             mysqli_query($koneksi, "DELETE FROM peminjaman WHERE id_peminjaman = '$id_peminjaman'");
+
+            // Tambah log aktivitas
+            tambah_log($koneksi, $_SESSION['id_user'], 'Pengembalian Buku', "Mengembalikan buku", $id_buku);
 
             $_SESSION['message'] = 'Buku berhasil dikembalikan.';
             $_SESSION['message_type'] = 'success';
@@ -64,8 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        VALUES ('$id_peminjaman', '$id_buku')";
 
                 if (mysqli_query($koneksi, $q2)) {
+                    // Ambil data buku untuk log
+                    $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
+                    
                     mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
                     mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '{$req['id_request']}'");
+                    
+                    // Tambah log aktivitas
+                    tambah_log($koneksi, $_SESSION['id_user'], 'Approve Peminjaman', "Menyetujui peminjaman buku", $id_buku);
+                    
                     $berhasil++;
                 } else {
                     $gagal++;
@@ -99,7 +113,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                    VALUES ('$id_peminjaman', '$id_buku')";
 
             if (mysqli_query($koneksi, $q2)) {
+                // Ambil data buku untuk log
+                $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
+                
                 mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
+
+                // Tambah log aktivitas
+                tambah_log($koneksi, $_SESSION['id_user'], 'Tambah Peminjaman', "Membuat peminjaman baru", $id_buku);
 
                 $_SESSION['message'] = 'Berhasil tambah peminjaman';
                 $_SESSION['message_type'] = 'success';
@@ -134,8 +154,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_query($koneksi, "INSERT INTO detail_peminjaman (id_peminjaman, id_buku)
                                    VALUES ('$id_peminjaman','$id_buku')");
 
+            // Ambil data buku untuk log
+            $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
+
             mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
             mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '$id_request'");
+
+            // Tambah log aktivitas
+            tambah_log($koneksi, $_SESSION['id_user'], 'Approve Request Peminjaman', "Menyetujui request peminjaman", $id_buku);
 
             $_SESSION['message'] = 'Request diterima';
             $_SESSION['message_type'] = 'success';
@@ -173,7 +199,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_query($koneksi, "INSERT INTO detail_peminjaman (id_peminjaman, id_buku)
                                VALUES ('$id_peminjaman','$id_buku')");
 
+        // Ambil data buku untuk log
+        $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
+
         mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
+
+        // Tambah log aktivitas
+        tambah_log($koneksi, $_SESSION['id_user'], 'Terima Peminjaman', "Menerima peminjaman buku", $id_buku);
 
         $_SESSION['message'] = 'Peminjaman diterima';
         $_SESSION['message_type'] = 'success';

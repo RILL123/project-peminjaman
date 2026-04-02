@@ -24,6 +24,7 @@ if (isset($_GET['edit'])) {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>CRUD User</title>
 	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="../../public/realtime.js"></script>
 	<link rel="icon" type="image/png" href="../../public/image/perpusku.png">
     <script>
 		tailwind.config = {
