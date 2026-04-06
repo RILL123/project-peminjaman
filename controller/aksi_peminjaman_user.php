@@ -41,6 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aksi']) && $_POST['ak
         $_SESSION['message'] = 'Data tidak lengkap.';
         $_SESSION['message_type'] = 'error';
     }
-    header('Location: ../../view/users/landing.php');
+    header('Location: ../../project-peminjaman/view/users/landing.php');
     exit;
 }
