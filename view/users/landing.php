@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +47,7 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_a
     <div class="bg-gradient-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-2">Selamat Datang !!</h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-2">Selamat Datang <?php echo $_SESSION['username']; ?>!!</h2>
                 <p class="text-perpusku4 text-lg">Perhatian!! Buku hanya boleh dipinjam maximal 3 hari</p>
             </div>
             <img src="../../public/image/perpusku.png" alt="Logo" class="hidden md:block w-24 h-24 rounded-full bg-white p-1" />
@@ -107,15 +111,23 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_a
     </div>
     <!-- Modal Pinjam Buku -->
     <div id="modalPinjam" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full relative">
+        <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full relative max-h-96 overflow-y-auto">
             <button onclick="closeModal('modalPinjam')" class="absolute top-3 right-3 text-perpusku1 text-xl font-bold">&times;</button>
+            <h3 class="text-lg font-bold text-perpusku1 mb-4">Peminjaman Buku</h3>
             <form id="formPinjam" method="POST" action="../../controller/aksi_peminjaman_user.php">
                 <input type="hidden" name="id_buku" id="pinjam_id_buku">
                 <input type="hidden" name="aksi" value="pinjam">
+                
+                <div class="mb-2 p-3 bg-yellow-100 border-l-4 border-yellow-500 rounded text-sm text-yellow-800">
+                    <strong>Perhatian!</strong> Durasi pinjam maksimal adalah <strong>3 hari</strong>
+                </div>
+                
                 <div class="mb-4">
                     <label for="pinjam_tgl_kembali" class="block font-semibold text-perpusku1 mb-2">Tanggal Kembali</label>
-                    <input type="date" name="tanggal_kembali" id="pinjam_tgl_kembali" class="w-full border border-perpusku2 rounded-lg p-2">
+                    <input type="date" name="tanggal_kembali" id="pinjam_tgl_kembali" class="w-full border border-perpusku2 rounded-lg p-2" onchange="hitungDurasi()">
+                    <small id="durasi_info" class="text-gray-600 mt-1 block">Pilih tanggal untuk melihat durasi pinjam</small>
                 </div>
+                
                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg py-2 shadow transition">Konfirmasi Pinjam</button>
             </form>
             <?php if (isset($_SESSION['message'])): ?>
@@ -150,6 +162,34 @@ function showPinjam(id) {
 }
 function closeModal(modalId) {
     document.getElementById(modalId).classList.add('hidden');
+}
+function hitungDurasi() {
+    const tanggalKembali = document.getElementById('pinjam_tgl_kembali').value;
+    const durasiInfo = document.getElementById('durasi_info');
+    
+    if (!tanggalKembali) {
+        durasiInfo.textContent = 'Pilih tanggal untuk melihat durasi pinjam';
+        durasiInfo.className = 'text-gray-600 mt-1 block';
+        return;
+    }
+    
+    const hari_ini = new Date();
+    hari_ini.setHours(0, 0, 0, 0);
+    
+    const tanggal_kembali = new Date(tanggalKembali);
+    const selisih_waktu = tanggal_kembali - hari_ini;
+    const selisih_hari = Math.ceil(selisih_waktu / (1000 * 60 * 60 * 24));
+    
+    if (selisih_hari < 1) {
+        durasiInfo.textContent = 'X Tanggal kembali harus lebih dari hari ini';
+        durasiInfo.className = 'text-red-600 mt-1 block font-semibold';
+    } else if (selisih_hari > 3) {
+        durasiInfo.textContent = 'Durasi ' + selisih_hari + ' hari melebihi batas maksimal 3 hari. Request akan ditolak!';
+        durasiInfo.className = 'X text-red-600 mt-1 block font-semibold';
+    } else {
+        durasiInfo.textContent = '✓ Durasi pinjam: ' + selisih_hari + ' hari (Terdaftar)';
+        durasiInfo.className = 'text-green-600 mt-1 block font-semibold';
+    }
 }
 function redirectNotifikasi() {
     var id_buku = document.getElementById('pinjam_id_buku').value;

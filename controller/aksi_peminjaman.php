@@ -51,13 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // APPROVE ALL
     elseif ($aksi === 'approve_all') {
-        $result = mysqli_query($koneksi, "SELECT * FROM request_peminjaman WHERE status = 'pending'");
+        $result = mysqli_query($koneksi, "SELECT r.*, u.nama, b.judul FROM request_peminjaman r JOIN users u ON r.id_user = u.id_user JOIN buku b ON r.id_buku = b.id_buku WHERE r.status = 'pending'");
         $berhasil = 0;
         $gagal = 0;
 
         while ($req = mysqli_fetch_assoc($result)) {
             $id_user = $req['id_user'];
             $id_buku = $req['id_buku'];
+            $nama_peminjam = $req['nama'];
+            $judul_buku = $req['judul'];
             $tanggal_pinjam = date('Y-m-d');
             $tanggal_kembali = date('Y-m-d', strtotime('+3 days'));
 
@@ -71,14 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        VALUES ('$id_peminjaman', '$id_buku')";
 
                 if (mysqli_query($koneksi, $q2)) {
-                    // Ambil data buku untuk log
-                    $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
-                    
                     mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
                     mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '{$req['id_request']}'");
                     
                     // Tambah log aktivitas
-                    tambah_log($koneksi, $_SESSION['id_user'], 'Approve Peminjaman', "Menyetujui peminjaman buku", $id_buku);
+                    tambah_log($koneksi, $_SESSION['id_user'], 'Terima Request Peminjaman', "Dari $nama_peminjam untuk buku $judul_buku (Batch)", $id_buku);
                     
                     $berhasil++;
                 } else {
@@ -137,11 +136,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif ($aksi === 'approve') {
         $id_request = $_POST['id_request'];
 
-        $req = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM request_peminjaman WHERE id_request = '$id_request'"));
+        $req = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT r.*, u.nama, b.judul FROM request_peminjaman r JOIN users u ON r.id_user = u.id_user JOIN buku b ON r.id_buku = b.id_buku WHERE r.id_request = '$id_request'"));
 
         if ($req) {
             $id_user = $req['id_user'];
             $id_buku = $req['id_buku'];
+            $nama_peminjam = $req['nama'];
+            $judul_buku = $req['judul'];
 
             $tanggal_pinjam = date('Y-m-d');
             $tanggal_kembali = date('Y-m-d', strtotime('+3 days'));
@@ -154,14 +155,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_query($koneksi, "INSERT INTO detail_peminjaman (id_peminjaman, id_buku)
                                    VALUES ('$id_peminjaman','$id_buku')");
 
-            // Ambil data buku untuk log
-            $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
-
             mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
             mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '$id_request'");
 
             // Tambah log aktivitas
-            tambah_log($koneksi, $_SESSION['id_user'], 'Approve Request Peminjaman', "Menyetujui request peminjaman", $id_buku);
+            tambah_log($koneksi, $_SESSION['id_user'], 'Terima Request Peminjaman', "Dari $nama_peminjam untuk buku $judul_buku", $id_buku);
 
             $_SESSION['message'] = 'Request diterima';
             $_SESSION['message_type'] = 'success';
@@ -175,7 +173,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif ($aksi === 'reject') {
         $id_request = $_POST['id_request'];
 
-        mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '$id_request'");
+        // Ambil data untuk log
+        $req = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT r.*, u.nama, b.judul FROM request_peminjaman r JOIN users u ON r.id_user = u.id_user JOIN buku b ON r.id_buku = b.id_buku WHERE r.id_request = '$id_request'"));
+        
+        if ($req) {
+            $nama_peminjam = $req['nama'];
+            $judul_buku = $req['judul'];
+            $id_buku = $req['id_buku'];
+            
+            // Ambil alasan penolakan jika ada di POST
+            $alasan = isset($_POST['alasan_penolakan']) ? mysqli_real_escape_string($koneksi, $_POST['alasan_penolakan']) : 'Tidak ada alasan';
+            
+            // Update alasan penolakan
+            mysqli_query($koneksi, "UPDATE request_peminjaman SET alasan_penolakan = '$alasan' WHERE id_request = '$id_request'");
+            
+            // Hapus request
+            mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '$id_request'");
+            
+            // Tambah log aktivitas
+            tambah_log($koneksi, $_SESSION['id_user'], 'Tolak Request Peminjaman', "Dari $nama_peminjam untuk buku $judul_buku. Alasan: $alasan", $id_buku);
+        }
 
         $_SESSION['message'] = 'Request ditolak';
         $_SESSION['message_type'] = 'success';

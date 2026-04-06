@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <?php
 
 include '../model/koneksi.php';
@@ -118,4 +118,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 mysqli_close($koneksi);
 ?>
->>>>>>> 57871de (menambahkan registerasi)

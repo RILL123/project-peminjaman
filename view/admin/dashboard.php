@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +40,7 @@
                 <div class="bg-gradient-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h2 class="text-3xl md:text-4xl font-bold mb-2">Selamat Datang, Admin!</h2>
+                            <h2 class="text-3xl md:text-4xl font-bold mb-2">Selamat Datang, <?php echo $_SESSION['username']; ?>!</h2>
                             <p class="text-perpusku4 text-lg">Kelola perpustakaan dengan mudah dan efisien</p>
                         </div>
                         <img src="../../public/image/perpusku.png" alt="Logo" class="hidden md:block w-24 h-24 rounded-full bg-white p-1" />
