@@ -2,13 +2,11 @@
 
 session_start();
 
-// Cek apakah user udah login
 if (!isset($_SESSION['id_user']) || !isset($_SESSION['role'])) {
     header('Location: ../../public/login.php');
     exit;
 }
 
-// Cek role admin
 if ($_SESSION['role'] !== 'admin') {
     header('Location: ../../public/login.php');
     exit;
@@ -22,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $aksi = $_POST['aksi'] ?? null;
 
-    // KEMBALIKAN
+    // Kemabali
     if ($aksi === 'kembalikan') {
         $id_peminjaman = $_POST['id_peminjaman'] ?? null;
         $id_buku = $_POST['id_buku'] ?? null;
@@ -49,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // APPROVE ALL
+    // Setujui Semua
     elseif ($aksi === 'approve_all') {
         $result = mysqli_query($koneksi, "SELECT r.*, u.nama, b.judul FROM request_peminjaman r JOIN users u ON r.id_user = u.id_user JOIN buku b ON r.id_buku = b.id_buku WHERE r.status = 'pending'");
         $berhasil = 0;
@@ -95,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // TAMBAH
+    // Tambah
     elseif ($aksi === 'tambah') {
         $id_user = $_POST['id_user'];
         $id_buku = $_POST['id_buku'];
@@ -132,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // APPROVE
+    // Setuju
     elseif ($aksi === 'approve') {
         $id_request = $_POST['id_request'];
 
@@ -169,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // REJECT
+    // Tolak
     elseif ($aksi === 'reject') {
         $id_request = $_POST['id_request'];
 
@@ -201,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // TERIMA USER
+    // Terima jika user langsung buat peminjaman tanpa request
     elseif ($aksi === 'terima') {
         $id_user = $_POST['id_user'];
         $id_buku = $_POST['id_buku'];
@@ -231,7 +229,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // DEFAULT
     else {
         $_SESSION['message'] = 'Aksi tidak valid';
         $_SESSION['message_type'] = 'error';
