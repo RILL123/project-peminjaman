@@ -35,7 +35,6 @@ while ($pinjam = mysqli_fetch_assoc($peminjaman_query)) {
     <div class="mb-2 text-perpusku2">Kategori: <span class="font-semibold"><?= htmlspecialchars($row['kategori']) ?></span></div>
     <div class="mb-2 text-gray-500">Tahun: <?= $row['tahun'] ?></div>
     <div class="mb-2 <?= $row['stok'] <= 0 ? 'text-red-600 font-bold' : 'text-perpusku3' ?>">Stok: <?= $row['stok'] ?></div>
-    <div class="mb-4 text-gray-600 text-sm">Deskripsi: <?= htmlspecialchars($row['deskripsi'] ?? '-') ?></div>
     
     <!-- Data Peminjaman -->
     <?php if (!empty($peminjaman_data)): ?>

@@ -189,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '$id_request'");
             
             // Tambah log aktivitas
-            tambah_log($koneksi, $_SESSION['id_user'], 'Tolak Request Peminjaman', "Dari $nama_peminjam untuk buku $judul_buku. Alasan: $alasan", $id_buku);
+            tambah_log($koneksi, $_SESSION['id_user'], 'Tolak Request Peminjaman', "Dari $nama_peminjam", $id_buku);
         }
 
         $_SESSION['message'] = 'Request ditolak';
@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Terima jika user langsung buat peminjaman tanpa request
+    // Terima jika user langsung buat peminjaman ke admin lngsung
     elseif ($aksi === 'terima') {
         $id_user = $_POST['id_user'];
         $id_buku = $_POST['id_buku'];

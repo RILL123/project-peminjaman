@@ -31,7 +31,7 @@ if (isset($_POST['tambah'])) {
 		$id_buku_baru = mysqli_insert_id($koneksi);
 		$id_user = $_SESSION['id_user'] ?? null;
 		if ($id_user) {
-			tambah_log($koneksi, $id_user, 'Tambah Buku', "Menambahkan buku baru: $judul", $id_buku_baru);
+			tambah_log($koneksi, $id_user, 'Tambah Buku', "$judul", $id_buku_baru);
 		}
 	}
 	$judul_url = urlencode($_POST['judul']);
@@ -71,7 +71,7 @@ if (isset($_POST['edit'])) {
 	if (mysqli_query($koneksi, $query)) {
 		$id_user = $_SESSION['id_user'] ?? null;
 		if ($id_user) {
-			tambah_log($koneksi, $id_user, 'Edit Buku', "Mengedit buku: $judul", $id);
+			tambah_log($koneksi, $id_user, 'Edit Buku', "$judul", $id);
 		}
 	}
 	$judul_url = urlencode($_POST['judul']);
@@ -98,7 +98,7 @@ if (isset($_GET['hapus'])) {
 	// Log aktivitas sebelum menghapus
 	$id_user = $_SESSION['id_user'] ?? null;
 	if ($id_user) {
-		tambah_log($koneksi, $id_user, 'Hapus Buku', "Menghapus buku: $judul", $id);
+		tambah_log($koneksi, $id_user, 'Hapus Buku', "$judul", $id);
 	}
 
 	// Hapus file cover jika ada

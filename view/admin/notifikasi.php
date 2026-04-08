@@ -49,7 +49,7 @@ if (!$pending) {
             <?php else: ?>
             <div class="bg-white rounded-xl shadow-xl p-6 md:p-8 mb-8">
                 <div class="font-semibold text-lg mb-4 text-gray-700 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" /></svg>
+                    <img src="../../public/image/menu.png" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
                     Daftar Request Peminjaman
                 </div>
                 <div class="overflow-x-auto">

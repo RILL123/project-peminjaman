@@ -6,25 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$username = mysqli_real_escape_string($koneksi, $_POST['username']);
 	$password = mysqli_real_escape_string($koneksi, $_POST['password']);
 
-	// Cek apakah tabel admin ada
-	$cek_tabel_admin = mysqli_query($koneksi, "SHOW TABLES LIKE 'admin'");
-	if ($cek_tabel_admin && mysqli_num_rows($cek_tabel_admin) === 1) {
-		$query_admin = "SELECT * FROM admin WHERE username='$username' AND password='$password'";
-		$result_admin = mysqli_query($koneksi, $query_admin);
-		if ($result_admin && mysqli_num_rows($result_admin) === 1) {
-			$data = mysqli_fetch_assoc($result_admin);
-			$_SESSION['login'] = true;
-			$_SESSION['username'] = $data['username'];
-			$_SESSION['id_user'] = $data['id_admin']; // Pastikan kolom id_admin ada di tabel admin
-			$_SESSION['role'] = 'admin';
-			include_once '../model/log_helper.php';
-			tambah_log($koneksi, $data['id_admin'], 'Login Admin', 'Admin login ke sistem');
-			header('Location: ../view/admin/dashboard.php');
-			exit;
-		}
-	}
-
-
 	// Jika bukan admin, cek ke tabel users (jika tabel users ada)
 	$cek_tabel_users = mysqli_query($koneksi, "SHOW TABLES LIKE 'users'");
 	if ($cek_tabel_users && mysqli_num_rows($cek_tabel_users) === 1) {
@@ -34,15 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$data = mysqli_fetch_assoc($result_users);
 			$_SESSION['login'] = true;
 			$_SESSION['username'] = $data['username'];
-			$_SESSION['id_user'] = $data['id_user']; // Pastikan kolom id_user ada di tabel users
+			$_SESSION['id_user'] = $data['id_user'];
 			// Deteksi role dari kolom role jika ada, default ke 'user'
 			$_SESSION['role'] = isset($data['role']) ? $data['role'] : 'user';
 			include_once '../model/log_helper.php';
-			tambah_log($koneksi, $data['id_user'], 'Login User', 'User login ke sistem');
+			
+			// Catat log sesuai dengan role
 			if ($_SESSION['role'] === 'admin') {
+				tambah_log($koneksi, $data['id_user'], 'Login Admin', 'Admin login ke sistem');
 				header('Location: ../view/admin/dashboard.php');
 				exit;
 			} else {
+				tambah_log($koneksi, $data['id_user'], 'Login User', 'User login ke sistem');
 				header('Location: ../view/users/landing.php');
 				exit;
 			}
