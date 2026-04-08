@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 06 Apr 2026 pada 05.50
+-- Waktu pembuatan: 08 Apr 2026 pada 05.05
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -140,7 +140,21 @@ INSERT INTO `log_aktivitas` (`id_log`, `id_user`, `aktivitas`, `keterangan`, `id
 (67, 1, 'Login User', 'User login ke sistem', NULL, '2026-04-06 04:44:38'),
 (68, 1, 'Pengembalian Buku', 'Mengembalikan buku', 20, '2026-04-06 05:34:18'),
 (69, 1, 'Tambah Peminjaman', 'Membuat peminjaman baru', 10, '2026-04-06 05:34:38'),
-(70, 1, 'Pengembalian Buku', 'Mengembalikan buku', 10, '2026-04-06 05:34:42');
+(70, 1, 'Pengembalian Buku', 'Mengembalikan buku', 10, '2026-04-06 05:34:42'),
+(71, 1, 'Login User', 'User login ke sistem', NULL, '2026-04-06 08:29:40'),
+(72, 2, 'Login User', 'User login ke sistem', NULL, '2026-04-06 08:30:15'),
+(73, 2, 'Request Peminjaman', 'Selama 2 hari', 23, '2026-04-06 08:30:21'),
+(74, 1, 'Login User', 'User login ke sistem', NULL, '2026-04-06 08:30:35'),
+(76, 1, 'Login User', 'User login ke sistem', NULL, '2026-04-07 08:39:43'),
+(78, 10, 'Request Peminjaman', 'Selama 2 hari', 19, '2026-04-07 08:42:22'),
+(79, 1, 'Login User', 'User login ke sistem', NULL, '2026-04-07 08:42:31'),
+(80, 1, 'Login User', 'User login ke sistem', NULL, '2026-04-08 02:12:16'),
+(88, 1, 'Tambah Buku', 'Yuru Camp', NULL, '2026-04-08 02:59:05'),
+(89, 1, 'Hapus Buku', 'Yuru Camp', NULL, '2026-04-08 02:59:25'),
+(90, 1, 'Login Admin', 'Admin login ke sistem', NULL, '2026-04-08 03:03:10'),
+(91, 2, 'Login User', 'User login ke sistem', NULL, '2026-04-08 03:08:49'),
+(92, 1, 'Login Admin', 'Admin login ke sistem', NULL, '2026-04-08 03:08:58'),
+(93, 1, 'Login Admin', 'Admin login ke sistem', NULL, '2026-04-08 04:43:47');
 
 -- --------------------------------------------------------
 
@@ -200,10 +214,11 @@ CREATE TABLE `request_peminjaman` (
 --
 
 INSERT INTO `request_peminjaman` (`id_request`, `id_user`, `id_buku`, `tanggal_request`, `status`, `alasan_penolakan`) VALUES
-(27, 2, 23, '2026-04-06 00:00:00', 'pending', NULL),
 (28, 2, 23, '2026-04-06 00:00:00', 'pending', NULL),
 (29, 2, 20, '2026-04-06 00:00:00', 'pending', NULL),
-(30, 2, 20, '2026-04-06 00:00:00', 'pending', NULL);
+(30, 2, 20, '2026-04-06 00:00:00', 'pending', NULL),
+(31, 2, 23, '2026-04-06 00:00:00', 'pending', NULL),
+(32, 10, 19, '2026-04-07 00:00:00', 'pending', NULL);
 
 -- --------------------------------------------------------
 
@@ -300,7 +315,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `buku`
 --
 ALTER TABLE `buku`
-  MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_peminjaman`
@@ -318,7 +333,7 @@ ALTER TABLE `laporan`
 -- AUTO_INCREMENT untuk tabel `log_aktivitas`
 --
 ALTER TABLE `log_aktivitas`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT untuk tabel `peminjaman`
@@ -336,7 +351,7 @@ ALTER TABLE `pengembalian`
 -- AUTO_INCREMENT untuk tabel `request_peminjaman`
 --
 ALTER TABLE `request_peminjaman`
-  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
