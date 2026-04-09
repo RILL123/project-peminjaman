@@ -3,78 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        perpusku1: '#1A3263',
-                        perpusku2: '#547792',
-                        perpusku3: '#FAB95B',
-                        perpusku4: '#E8E2DB',
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="../src/output.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="image/perpusku.png">
     <title>Login - Perpusku</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Poppins', sans-serif; }
-        .login-container {
-            background: linear-gradient(135deg, #1A3263 0%, #547792 100%);
-        }
-        .card-shadow {
-            box-shadow: 0 20px 60px rgba(26, 50, 99, 0.15);
-        }
-        .input-field {
-            transition: all 0.3s ease;
-            background-color: rgba(255, 255, 255, 0.95);
-        }
-        /* Pastikan input tidak menutupi icon */
-        .input-field:focus {
-            background-color: #ffffff;
-            transform: translateY(-2px);
-        }
-        /* Pastikan icon selalu di atas input */
-        .input-icon {
-            z-index: 10;
-            pointer-events: none;
-            transition: filter 0.3s;
-        }
-        /* Efek warna pada icon saat input aktif (Tailwind: filter, drop-shadow, hue-rotate) */
-        .input-field:focus ~ .input-icon,
-        .input-field:not(:placeholder-shown) ~ .input-icon {
-            filter: drop-shadow(0 0 2px #547792) brightness(1.2) hue-rotate(10deg);
-        }
-        .btn-login {
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, #1A3263 0%, #547792 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(26, 50, 99, 0.3);
-        }
-        .btn-login:active {
-            transform: translateY(0);
-        }
-        .logo-container {
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        .divider-line {
-            background: linear-gradient(90deg, transparent, #FAB95B, transparent);
-        }
-    </style>
 </head>
-<body class="min-h-screen login-container flex items-center justify-center p-4">
+<body class="min-h-screen bg-gradient-to-br from-perpusku1 to-perpusku2 flex items-center justify-center p-4">
     <!-- Background decoration -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute top-20 left-10 w-72 h-72 bg-perpusku2 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
@@ -86,7 +19,7 @@
         <!-- Decorative top line -->
         <div class="h-1 bg-gradient-to-r from-perpusku3 via-perpusku2 to-perpusku1 rounded-full mb-8"></div>
 
-        <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
             <!-- Header Section -->
             <div class="bg-gradient-to-br from-perpusku1 to-perpusku2 px-8 py-12 text-white relative">
                 <div class="absolute top-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full -mr-20 -mt-20"></div>
@@ -123,11 +56,11 @@
                                 id="username" 
                                 name="username" 
                                 required 
-                                class="input-field w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-perpusku1 placeholder-gray-400 focus:border-perpusku1 focus:ring-0 focus:outline-none" 
+                                class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-perpusku1 placeholder-gray-400 focus:border-perpusku1 focus:ring-0 focus:outline-none transition" 
                                 placeholder="Masukkan username Anda" 
                                 autocomplete="username"
                             >
-                            <img src="image/user.png" class="input-icon absolute left-4 top-3.5 w-5 h-5" alt="icon user">
+                            <img src="image/user.png" class="absolute left-4 top-3.5 w-5 h-5" alt="icon user">
                         </div>
                     </div>
 
@@ -140,25 +73,25 @@
                                 id="password" 
                                 name="password" 
                                 required 
-                                class="input-field w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-perpusku1 placeholder-gray-400 focus:border-perpusku1 focus:ring-0 focus:outline-none" 
+                                class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-perpusku1 placeholder-gray-400 focus:border-perpusku1 focus:ring-0 focus:outline-none transition" 
                                 placeholder="Masukkan password Anda" 
                                 autocomplete="current-password"
                             >
-                            <img src="image/padlock.png" class="input-icon absolute left-4 top-3.5 w-5 h-5" alt="icon password">
+                            <img src="image/padlock.png" class="absolute left-4 top-3.5 w-5 h-5" alt="icon password">
                         </div>
                     </div>
 
                     <!-- Login Button -->
                     <button 
                         type="submit" 
-                        class="btn-login w-full py-3 px-4 text-white font-semibold rounded-xl text-lg mt-8 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-perpusku1"
+                        class="w-full py-3 px-4 bg-perpusku1 text-white font-semibold rounded-xl text-lg mt-8 hover:bg-perpusku2 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-perpusku1 transition"
                     >
                         Masuk
                     </button>
                 </form>
 
                 <!-- Divider -->
-                <div class="divider-line h-px my-8"></div>
+                <div class="h-px bg-gray-200 my-8"></div>
 
                 <!-- Register Link -->
                 <div class="text-center mb-6">

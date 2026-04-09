@@ -37,22 +37,7 @@ $aksi = $_GET['aksi'] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Peminjaman</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../public/realtime.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        perpusku1: '#1A3263',
-                        perpusku2: '#547792',
-                        perpusku3: '#FAB95B',
-                        perpusku4: '#E8E2DB',
-                    }
-                }
-            }
-        }
-    </script>
+<link href="../../src/output.css" rel="stylesheet">
 <link rel="icon" type="image/png" href="../../public/image/perpusku.png">
 </head>
 <body class="bg-perpusku4">

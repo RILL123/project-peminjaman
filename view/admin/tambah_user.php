@@ -16,22 +16,8 @@ if (isset($_GET['edit'])) {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?= $edit ? 'Edit User' : 'Tambah User' ?> - Perpusku</title>
-	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="../../src/output.css" rel="stylesheet">
 	<link rel="icon" type="image/png" href="../../public/image/perpusku.png">
-	<script>
-		tailwind.config = {
-			theme: {
-				extend: {
-					colors: {
-						perpusku1: '#1A3263',
-						perpusku2: '#547792',
-						perpusku3: '#FAB95B',
-						perpusku4: '#E8E2DB',
-					}
-				}
-			}
-		}
-	</script>
 </head>
 <body class="bg-perpusku4 min-h-screen">
 	<?php include '../partials/admin_sidebar.php'; ?>

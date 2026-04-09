@@ -18,26 +18,11 @@ $buku_count = mysqli_num_rows($buku);
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-	<script src="https://cdn.tailwindcss.com"></script>
+	 <link href="../../src/output.css" rel="stylesheet">
 	<title>Data Buku</title>
 	<link rel="icon" type="image/png" href="../../public/image/perpusku.png">
-	<script src="../../public/realtime.js"></script>
-    <script>
-		tailwind.config = {
-			theme: {
-				extend: {
-					colors: {
-						perpusku1: '#1A3263',
-						perpusku2: '#547792',
-						perpusku3: '#FAB95B',
-						perpusku4: '#E8E2DB',
-					}
-				}
-			}
-		}
-	</script>
 </head>
-<body class="bg-gradient-to-br from-perpusku4 to-white min-h-screen">
+<body class="bg-perpusku4 to-white min-h-screen">
 	<?php include '../partials/admin_sidebar.php'; ?>
 	<button id="showSidebarBtn" class="fixed top-4 left-4 z-40 bg-perpusku1 text-perpusku3 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition hover:bg-perpusku2" style="display:none" onclick="showSidebar()">
 		<img src="../../public/image/menu.png" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
