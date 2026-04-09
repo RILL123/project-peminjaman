@@ -20,7 +20,7 @@
             
             <main class="flex-1 p-4 md:p-8">
                 <!-- Header -->
-                <div class="bg-gradient-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
+                <div class="bg-linear-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <h2 class="text-3xl md:text-4xl font-bold mb-2">Log Aktivitas</h2>
@@ -120,7 +120,7 @@
                             ?>
                             <tr class="border-b border-gray-200 hover:bg-perpusku4 transition log-row" data-search="<?= strtolower(htmlspecialchars($log['id_log'] . ' ' . $log['aktivitas'] . ' ' . $log['keterangan'] . ' ' . ($log['judul_buku'] ?? '') . ' ' . ($log['nama_user'] ?? ''))) ?>">
                                 <td class="px-6 py-4 text-sm text-gray-700 row-number" data-id="<?= htmlspecialchars($log['id_log']) ?>"><?= htmlspecialchars($log['id_log']) ?></td>
-                                <td class="px-6 py-4 text-sm text-gray-700 font-semibold text-perpusku1">
+                                <td class="px-6 py-4 text-sm font-semibold text-perpusku1">
                                     <?= htmlspecialchars($log['aktivitas']) ?>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-600">
@@ -179,7 +179,7 @@
     </div>
 
     <!-- Modal Detail -->
-    <div id="detailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50" style="">
         <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-bold text-perpusku1">Detail Aktivitas</h3>

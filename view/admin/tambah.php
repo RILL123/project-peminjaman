@@ -26,24 +26,10 @@ if (isset($_GET['edit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $isEdit ? 'Edit Buku' : 'Tambah Buku' ?> - Perpusku</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        perpusku1: '#1A3263',
-                        perpusku2: '#547792',
-                        perpusku3: '#FAB95B',
-                        perpusku4: '#E8E2DB',
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="../../src/output.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../../public/image/perpusku.png">
 </head>
-<body class="bg-gradient-to-br from-perpusku4 to-white min-h-screen">
+<body class="bg-linear-to-br from-perpusku4 to-white min-h-screen">
     <?php include '../partials/admin_sidebar.php'; ?>
     <div id="mainContent" class="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300 p-4 md:p-6">
   
@@ -59,7 +45,7 @@ if (isset($_GET['edit'])) {
      
         <div class="bg-white rounded-xl shadow-xl max-w-2xl mx-auto w-full overflow-hidden">
     
-            <div class="bg-gradient-to-r from-perpusku1 to-perpusku2 text-white p-6">
+            <div class="bg-linear-to-r from-perpusku1 to-perpusku2 text-white p-6">
                 <h2 class="text-2xl font-bold">Informasi Buku</h2>
             </div>
 

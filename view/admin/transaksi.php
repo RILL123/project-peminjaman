@@ -1,4 +1,3 @@
-
 <?php
 include_once '../../model/koneksi.php';
 
@@ -122,7 +121,7 @@ $aksi = $_GET['aksi'] ?? '';
         </style>
 
         <!-- Confirmation Modal -->
-        <div id="confirmModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
             <div class="bg-white rounded-lg shadow-2xl p-6 max-w-sm mx-4 modal-animate">
                 <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-yellow-100">
                     <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

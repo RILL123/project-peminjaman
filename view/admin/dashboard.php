@@ -23,7 +23,7 @@ session_start();
             
             <main class="flex-1 p-4 md:p-8">
                 <!-- Welcome Card -->
-                <div class="bg-gradient-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
+                <div class="bg-linear-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <h2 class="text-3xl md:text-4xl font-bold mb-2">Selamat Datang, <?php echo $_SESSION['username']; ?>!</h2>
@@ -36,7 +36,7 @@ session_start();
                 <!-- Statistics Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <!-- Card 1: Total Buku -->
-                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t-1">
+                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Total Buku</p>
@@ -54,7 +54,7 @@ session_start();
                         </div>
                     </div>
                     <!-- Card 2: Peminjaman Aktif -->
-                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t-1">
+                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Peminjaman Aktif</p>
@@ -72,7 +72,7 @@ session_start();
                         </div>
                     </div>
                     <!-- Card 3: Total User -->
-                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t-1">
+                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Total User</p>
@@ -90,7 +90,7 @@ session_start();
                         </div>
                     </div>
                     <!-- Card 4: Pengembalian Tertunda -->
-                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t-1">
+                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Tertunda</p>

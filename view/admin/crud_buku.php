@@ -59,7 +59,7 @@ $buku_count = mysqli_num_rows($buku);
 	<?php endif; ?>
 	<div id="mainContent" class="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300 p-4 md:p-6">
 		<!-- Header Section -->
-		<div class="mb-10 bg-gradient-to-r from-perpusku1 via-perpusku2 to-perpusku1 rounded-2xl shadow-lg p-8 text-white">
+		<div class="mb-10 bg-linear-to-r from-perpusku1 via-perpusku2 to-perpusku1 rounded-2xl shadow-lg p-8 text-white">
 			<h1 class="text-4xl md:text-5xl font-bold mb-2">Data Buku</h1>
 			<p class="text-perpusku4 text-lg">Total Buku: <span class="font-bold text-2xl"><?= $buku_count ?></span></p>
 		</div>
@@ -80,7 +80,7 @@ $buku_count = mysqli_num_rows($buku);
 						<option value="Novel" <?= $kategori == 'Novel' ? 'selected' : '' ?>>Novel</option>
 					</select>
 				</div>
-				<button type="submit" class="bg-gradient-to-r from-perpusku2 to-perpusku1 hover:from-perpusku1 hover:to-perpusku2 text-white px-8 py-4 rounded-xl font-bold transition duration-300 shadow-lg hover:shadow-xl">Cari</button>
+				<button type="submit" class="bg-linear-to-r from-perpusku2 to-perpusku1 hover:from-perpusku1 hover:to-perpusku2 text-white px-8 py-4 rounded-xl font-bold transition duration-300 shadow-lg hover:shadow-2xl">Cari</button>
 			</div>
 		</form>
 		<div id="mainList">
@@ -100,7 +100,7 @@ $buku_count = mysqli_num_rows($buku);
 						<?php if (!empty($row['cover'])): ?>
 							<img src="../../public/cover/<?= htmlspecialchars($row['cover']) ?>" alt="Cover" class="w-full h-auto object-contain group-hover:scale-105 transition duration-300">
 						<?php else: ?>
-							<div class="w-full aspect-[2/3] flex items-center justify-center text-perpusku2 bg-gray-200 font-semibold text-xs">Tidak ada cover</div>
+							<div class="w-full aspect-2/3 flex items-center justify-center text-perpusku2 bg-gray-200 font-semibold text-xs">Tidak ada cover</div>
 						<?php endif; ?>
 					</div>
 
@@ -132,10 +132,10 @@ $buku_count = mysqli_num_rows($buku);
 			<?php endforeach; ?>
 			</div>
 			<?php else: ?>
-			<div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg p-12 text-center border border-gray-200">
+			<div class="bg-linear-to-br from-white to-gray-50 rounded-2xl shadow-lg p-12 text-center border border-gray-200">
 				<p class="text-perpusku2 text-xl font-semibold mb-4">Tidak ada buku yang ditemukan</p>
 				<p class="text-gray-500 mb-6">Mulai dengan menambahkan buku pertama Anda</p>
-				<a href="crud_buku.php" class="inline-block bg-gradient-to-r from-perpusku1 to-perpusku2 text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg transition duration-300">Kembali ke Daftar</a>
+				<a href="crud_buku.php" class="inline-block bg-linear-to-r from-perpusku1 to-perpusku2 text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg transition duration-300">Kembali ke Daftar</a>
 			</div>
 			<?php endif; ?>
 		</div>

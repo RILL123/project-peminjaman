@@ -10,7 +10,7 @@ include '../../model/koneksi.php';
     <link href="../../src/output.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../../public/image/perpusku.png">
 </head>
-<body class="bg-gradient-to-br from-perpusku4 to-white min-h-screen">
+<body class="bg-linear-to-br from-perpusku4 to-white min-h-screen">
     <?php include '../partials/admin_sidebar.php'; ?>
     <div id="mainContent" class="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300 p-4 md:p-6">
         <div class="mb-8">

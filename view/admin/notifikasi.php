@@ -81,7 +81,7 @@ if (!$pending) {
     </div>
 
     <!-- Modal Tolak Request -->
-    <div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
         <div class="bg-white rounded-xl shadow-xl p-6 max-w-md w-full">
             <h3 class="text-lg font-bold text-perpusku1 mb-4">Tolak Request Peminjaman</h3>
             <form method="POST" action="../../controller/aksi_peminjaman.php">

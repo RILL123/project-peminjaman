@@ -54,7 +54,7 @@
             <!-- Header -->
             <div class="flex items-center gap-3 px-6 py-5 border-b border-perpusku2">
                 <div class="flex items-center gap-3 flex-1 cursor-pointer" onclick="toggleCollapseSidebar()" title="Toggle Sidebar">
-                    <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
+                    <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center shrink-0">
                         <img src="../../public/image/perpusku.png" alt="Logo" class="w-8 h-8" />
                     </div>
                     <div class="sidebar-label">
@@ -66,7 +66,7 @@
             <!-- Navigation -->
             <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
                 <a href="landing.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
-                    <img src="../../public/image/dashboard.png" class="h-5 w-5 flex-shrink-0" alt="Dashboard">
+                    <img src="../../public/image/dashboard.png" class="h-5 w-5 shrink-0" alt="Dashboard">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Home</span>
                 </a>
             </nav>
@@ -74,7 +74,7 @@
             <!-- Footer - Logout -->
             <div class="px-3 py-4 border-t border-perpusku2">
                 <a href="../../controller/aksi_logout.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-red-600 transition duration-300 sidebar-link group">
-                    <img src="../../public/image/logout.png" class="h-5 w-5 flex-shrink-0" alt="Logout">
+                    <img src="../../public/image/logout.png" class="h-5 w-5 shrink-0" alt="Logout">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Logout</span>
                 </a>
             </div>

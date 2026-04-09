@@ -30,7 +30,7 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_a
 <main id="mainContent" class="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300 p-4 md:p-8">
 
     <!-- Welcome Card -->
-    <div class="bg-gradient-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
+    <div class="bg-linear-to-r from-perpusku1 to-perpusku2 rounded-2xl shadow-lg p-6 md:p-8 mb-8 text-white">
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-3xl md:text-4xl font-bold mb-2">Selamat Datang <?php echo $_SESSION['username']; ?>!!</h2>
@@ -55,7 +55,7 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_a
                         <option value="Novel" <?= $kategori == 'Novel' ? 'selected' : '' ?>>Novel</option>
                     </select>
                 </div>
-                <button type="submit" class="bg-gradient-to-r from-perpusku2 to-perpusku1 hover:from-perpusku1 hover:to-perpusku2 text-white px-8 py-4 rounded-xl font-bold transition duration-300 shadow-lg hover:shadow-xl">Cari</button>
+                <button type="submit" class="bg-linear-to-r from-perpusku2 to-perpusku1 hover:from-perpusku1 hover:to-perpusku2 text-white px-8 py-4 rounded-xl font-bold transition duration-300 shadow-lg hover:shadow-2xl">Cari</button>
             </div>
         </form>
     <!-- Buku Card Section -->
@@ -89,14 +89,14 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_a
         </div>
     </div>
     <!-- Modal Detail Buku -->
-    <div id="modalDetail" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div id="modalDetail" class="fixed inset-0 bg-black bg-opacity-40 hidden z-50">
         <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full relative">
             <button onclick="closeModal('modalDetail')" class="absolute top-3 right-3 text-perpusku1 text-xl font-bold">&times;</button>
             <div id="detailContent"></div>
         </div>
     </div>
     <!-- Modal Pinjam Buku -->
-    <div id="modalPinjam" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div id="modalPinjam" class="fixed inset-0 bg-black bg-opacity-40 hidden z-50">
         <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full relative max-h-96 overflow-y-auto">
             <button onclick="closeModal('modalPinjam')" class="absolute top-3 right-3 text-perpusku1 text-xl font-bold">&times;</button>
             <h3 class="text-lg font-bold text-perpusku1 mb-4">Peminjaman Buku</h3>

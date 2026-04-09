@@ -71,11 +71,11 @@
     <!-- Main Register Card -->
     <div class="relative w-full max-w-md">
         <!-- Decorative top line -->
-        <div class="h-1 bg-gradient-to-r from-perpusku3 via-perpusku2 to-perpusku1 rounded-full mb-8"></div>
+        <div class="h-1 bg-linear-to-r from-perpusku3 via-perpusku2 to-perpusku1 rounded-full mb-8"></div>
 
         <div class="bg-white rounded-2xl card-shadow overflow-hidden">
             <!-- Header Section -->
-            <div class="bg-gradient-to-br from-perpusku1 to-perpusku2 px-8 py-12 text-white relative">
+            <div class="bg-linear-to-br from-perpusku1 to-perpusku2 px-8 py-12 text-white relative">
                 <div class="absolute top-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full -mr-20 -mt-20"></div>
                 
                 <div class="flex flex-col items-center relative z-10">
@@ -204,7 +204,7 @@
         </div>
 
         <!-- Decorative bottom line -->
-        <div class="h-1 bg-gradient-to-r from-perpusku1 to-perpusku3 rounded-full mt-8"></div>
+        <div class="h-1 bg-linear-to-r from-perpusku1 to-perpusku3 rounded-full mt-8"></div>
     </div>
 </body>
 </html>
