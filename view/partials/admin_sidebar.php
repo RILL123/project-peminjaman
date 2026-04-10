@@ -83,7 +83,11 @@
                 </a>
                 <a href="../admin/notifikasi.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
                     <img src="../../public/image/bell.png" class="h-5 w-5 shrink-0" alt="Notifikasi">
-                    <span class="sidebar-label font-medium text-sm group-hover:text-white">Notifikasi</span>
+                    <span class="sidebar-label font-medium text-sm group-hover:text-white">Request Peminjaman</span>
+                </a>
+                <a href="request_pengembalian.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
+                    <img src="../../public/image/back.png" class="h-5 w-5 shrink-0" alt="Request Pengembalian">
+                    <span class="sidebar-label font-medium text-sm group-hover:text-white">Request Pengembalian</span>
                 </a>
             </nav>
 

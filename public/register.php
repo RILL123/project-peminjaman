@@ -8,7 +8,6 @@
     <link rel="icon" type="image/png" href="image/perpusku.png">
     <title>Registrasi - Perpusku</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Poppins', sans-serif; }
         .login-container {
             background: linear-gradient(135deg, #1A3263 0%, #547792 100%);

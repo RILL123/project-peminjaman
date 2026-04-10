@@ -47,52 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Setujui Semua
-    elseif ($aksi === 'approve_all') {
-        $result = mysqli_query($koneksi, "SELECT r.*, u.nama, b.judul FROM request_peminjaman r JOIN users u ON r.id_user = u.id_user JOIN buku b ON r.id_buku = b.id_buku WHERE r.status = 'pending'");
-        $berhasil = 0;
-        $gagal = 0;
-
-        while ($req = mysqli_fetch_assoc($result)) {
-            $id_user = $req['id_user'];
-            $id_buku = $req['id_buku'];
-            $nama_peminjam = $req['nama'];
-            $judul_buku = $req['judul'];
-            $tanggal_pinjam = date('Y-m-d');
-            $tanggal_kembali = date('Y-m-d', strtotime('+3 days'));
-
-            $q1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali)
-                   VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali')";
-
-            if (mysqli_query($koneksi, $q1)) {
-                $id_peminjaman = mysqli_insert_id($koneksi);
-
-                $q2 = "INSERT INTO detail_peminjaman (id_peminjaman, id_buku)
-                       VALUES ('$id_peminjaman', '$id_buku')";
-
-                if (mysqli_query($koneksi, $q2)) {
-                    mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
-                    mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '{$req['id_request']}'");
-                    
-                    // Tambah log aktivitas
-                    tambah_log($koneksi, $_SESSION['id_user'], 'Terima Request Peminjaman', "Dari $nama_peminjam untuk buku $judul_buku (Batch)", $id_buku);
-                    
-                    $berhasil++;
-                } else {
-                    $gagal++;
-                }
-            } else {
-                $gagal++;
-            }
-        }
-
-        $_SESSION['message'] = "$berhasil berhasil, $gagal gagal.";
-        $_SESSION['message_type'] = 'success';
-
-        header('Location: ../view/admin/notifikasi.php');
-        exit;
-    }
-
     // Tambah
     elseif ($aksi === 'tambah') {
         $id_user = $_POST['id_user'];

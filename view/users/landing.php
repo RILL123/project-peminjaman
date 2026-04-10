@@ -81,7 +81,7 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_a
                     </div>
                     <div class="flex gap-2 mt-4">
                         <button onclick="showDetail(<?= $row['id_buku'] ?>)" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-semibold shadow transition">Detail</button>
-                        <button onclick="showPinjam(<?= $row['id_buku'] ?>)" class="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-semibold shadow transition" <?= ($row['stok'] <= 0 ? 'disabled style=\'background:#ccc;cursor:not-allowed\'' : '') ?>>Pinjam</button>
+                        <button onclick="showPinjam(<?= $row['id_buku'] ?>, '<?= htmlspecialchars($row['judul']) ?>', <?= $row['stok'] ?>)" class="flex-1 bg-perpusku1 hover:bg-perpusku2 text-white px-3 py-2 rounded-lg font-semibold shadow transition" <?= $row['stok'] <= 0 ? 'disabled' : '' ?>>Pinjam</button>
                     </div>
                 </div>
             </div>
@@ -89,103 +89,126 @@ $buku = mysqli_query($koneksi, "SELECT * FROM buku $where_sql ORDER BY created_a
         </div>
     </div>
     <!-- Modal Detail Buku -->
-    <div id="modalDetail" class="fixed inset-0 bg-black bg-opacity-40 hidden z-50">
-        <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full relative">
+    <div id="modalDetail" class="fixed inset-0 border hidden z-50 flex items-center justify-center">
+        <div class="bg-white border border-perpusku1 rounded-xl shadow-xl p-8 max-w-md w-full relative">
             <button onclick="closeModal('modalDetail')" class="absolute top-3 right-3 text-perpusku1 text-xl font-bold">&times;</button>
             <div id="detailContent"></div>
         </div>
     </div>
+
     <!-- Modal Pinjam Buku -->
-    <div id="modalPinjam" class="fixed inset-0 bg-black bg-opacity-40 hidden z-50">
-        <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full relative max-h-96 overflow-y-auto">
+    <div id="modalPinjam" class="fixed inset-0 border hidden z-50 flex items-center justify-center">
+        <div class="bg-white border border-perpusku1 rounded-xl shadow-xl p-8 max-w-md w-full relative">
             <button onclick="closeModal('modalPinjam')" class="absolute top-3 right-3 text-perpusku1 text-xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-perpusku1 mb-4">Peminjaman Buku</h3>
-            <form id="formPinjam" method="POST" action="../../controller/aksi_peminjaman_user.php">
+            <h3 class="text-lg font-bold text-perpusku1 mb-4">Form Peminjaman Buku</h3>
+            <form id="formPinjam" method="POST" action="../../controller/aksi_peminjaman_user.php" onsubmit="return validatePinjam()">
                 <input type="hidden" name="id_buku" id="pinjam_id_buku">
-                <input type="hidden" name="aksi" value="pinjam">
-                
-                <div class="mb-2 p-3 bg-yellow-100 border-l-4 border-yellow-500 rounded text-sm text-yellow-800">
-                    <strong>Perhatian!</strong> Durasi pinjam maksimal adalah <strong>3 hari</strong>
+                <div class="mb-2">
+                    <label class="block text-sm font-semibold mb-1">Judul Buku</label>
+                    <input type="text" id="pinjam_judul" class="w-full border rounded px-3 py-2 bg-gray-100" readonly>
                 </div>
-                
-                <div class="mb-4">
-                    <label for="pinjam_tgl_kembali" class="block font-semibold text-perpusku1 mb-2">Tanggal Kembali</label>
-                    <input type="date" name="tanggal_kembali" id="pinjam_tgl_kembali" class="w-full border border-perpusku2 rounded-lg p-2" onchange="hitungDurasi()">
-                    <small id="durasi_info" class="text-gray-600 mt-1 block">Pilih tanggal untuk melihat durasi pinjam</small>
+                <div class="mb-2">
+                    <label class="block text-sm font-semibold mb-1">Nama Peminjam</label>
+                    <input type="text" class="w-full border rounded px-3 py-2 bg-gray-100" value="<?= htmlspecialchars($_SESSION['username']) ?>" readonly>
                 </div>
-                
-                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg py-2 shadow transition">Konfirmasi Pinjam</button>
+                <div class="mb-2 flex gap-2">
+                    <div class="flex-1">
+                        <label class="block text-sm font-semibold mb-1">Tanggal Pinjam</label>
+                        <input type="text" name="tanggal_pinjam" id="pinjam_tgl_pinjam" class="w-full border rounded px-3 py-2 bg-gray-100" readonly>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-semibold mb-1">Tanggal Kembali</label>
+                        <input type="date" name="tanggal_kembali" id="pinjam_tgl_kembali" class="w-full border rounded px-3 py-2" required>
+                        <div id="pinjamKembaliInfo" class="text-xs mt-1"></div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-semibold mb-1">Jumlah Pinjam</label>
+                    <input type="number" name="jumlah" id="pinjam_jumlah" class="w-full border rounded px-3 py-2" min="1" value="1" required>
+                    <input type="hidden" id="pinjam_stok">
+                    <div id="pinjamError" class="text-red-500 text-xs mt-1 hidden"></div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                    <button type="button" onclick="closeModal('modalPinjam')" class="flex-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg transition">Batal</button>
+                    <button type="submit" class="flex-1 bg-perpusku1 hover:bg-perpusku2 text-white font-bold py-2 px-4 rounded-lg transition shadow">Pinjam</button>
+                </div>
             </form>
-            <?php if (isset($_SESSION['message'])): ?>
-                <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-perpusku1 text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 animate-fade-in">
-                    <span><?= $_SESSION['message'] ?></span>
-                    <button onclick="this.parentElement.remove()" class="ml-4 text-perpusku3 hover:text-white font-bold">&times;</button>
-                </div>
-                <style>
-                @keyframes fade-in {
-                    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-                    to { opacity: 1; transform: translateY(0) scale(1); }
-                }
-                .animate-fade-in { animation: fade-in 0.4s; }
-                </style>
-                <?php unset($_SESSION['message']); unset($_SESSION['message_type']); ?>
-            <?php endif; ?>
         </div>
     </div>
 </main>
 <script>
 function showDetail(id) {
-    fetch('detail_buku.php?id=' + id)
+    fetch('detail_buku.php?id=' + id + '&simple=1')
         .then(res => res.text())
         .then(html => {
             document.getElementById('detailContent').innerHTML = html;
             document.getElementById('modalDetail').classList.remove('hidden');
         });
 }
-function showPinjam(id) {
-    document.getElementById('pinjam_id_buku').value = id;
+
+function showPinjam(id_buku, judul, stok) {
+    document.getElementById('pinjam_id_buku').value = id_buku;
+    document.getElementById('pinjam_judul').value = judul;
+    document.getElementById('pinjam_stok').value = stok;
+    document.getElementById('pinjam_jumlah').value = 1;
+    document.getElementById('pinjamError').classList.add('hidden');
+    document.getElementById('pinjamKembaliInfo').textContent = '';
+    document.getElementById('pinjamKembaliInfo').className = 'text-xs mt-1';
+    // Set tanggal pinjam hari ini dan default kembali +3 hari
+    const today = new Date();
+    const tglPinjam = today.toISOString().slice(0,10);
+    const tglKembali = new Date(today.getTime() + 3*24*60*60*1000).toISOString().slice(0,10);
+    document.getElementById('pinjam_tgl_pinjam').value = tglPinjam;
+    document.getElementById('pinjam_tgl_kembali').value = tglKembali;
     document.getElementById('modalPinjam').classList.remove('hidden');
 }
+
+function validatePinjam() {
+    const jumlah = parseInt(document.getElementById('pinjam_jumlah').value);
+    const stok = parseInt(document.getElementById('pinjam_stok').value);
+    const tglPinjam = document.getElementById('pinjam_tgl_pinjam').value;
+    const tglKembali = document.getElementById('pinjam_tgl_kembali').value;
+    const info = document.getElementById('pinjamKembaliInfo');
+    info.textContent = '';
+    info.className = 'text-xs mt-1';
+    // Validasi jumlah
+    if (jumlah > stok) {
+        document.getElementById('pinjamError').textContent = 'Jumlah pinjam melebihi stok yang tersedia!';
+        document.getElementById('pinjamError').classList.remove('hidden');
+        return false;
+    }
+    document.getElementById('pinjamError').classList.add('hidden');
+    // Validasi tanggal kembali
+    const d1 = new Date(tglPinjam);
+    const d2 = new Date(tglKembali);
+    const diff = Math.ceil((d2 - d1) / (1000*60*60*24));
+    if (diff < 1) {
+        info.textContent = 'Tanggal kembali minimal 1 hari setelah tanggal pinjam!';
+        info.className = 'text-xs mt-1 text-red-500';
+        return false;
+    } else if (diff > 3) {
+        info.textContent = 'Tanggal kembali tidak boleh lebih dari 3 hari!';
+        info.className = 'text-xs mt-1 text-red-500';
+        return false;
+    } else {
+        info.textContent = 'Bisa meminjam selama ' + diff + ' hari.';
+        info.className = 'text-xs mt-1 text-green-600';
+    }
+    return true;
+}
+
 function closeModal(modalId) {
     document.getElementById(modalId).classList.add('hidden');
 }
-function hitungDurasi() {
-    const tanggalKembali = document.getElementById('pinjam_tgl_kembali').value;
-    const durasiInfo = document.getElementById('durasi_info');
-    
-    if (!tanggalKembali) {
-        durasiInfo.textContent = 'Pilih tanggal untuk melihat durasi pinjam';
-        durasiInfo.className = 'text-gray-600 mt-1 block';
-        return;
+// Update info saat tanggal kembali diubah
+document.addEventListener('DOMContentLoaded', function() {
+    var tglKembali = document.getElementById('pinjam_tgl_kembali');
+    if (tglKembali) {
+        tglKembali.addEventListener('input', function() {
+            validatePinjam();
+        });
     }
-    
-    const hari_ini = new Date();
-    hari_ini.setHours(0, 0, 0, 0);
-    
-    const tanggal_kembali = new Date(tanggalKembali);
-    const selisih_waktu = tanggal_kembali - hari_ini;
-    const selisih_hari = Math.ceil(selisih_waktu / (1000 * 60 * 60 * 24));
-    
-    if (selisih_hari < 1) {
-        durasiInfo.textContent = 'X Tanggal kembali harus lebih dari hari ini';
-        durasiInfo.className = 'text-red-600 mt-1 block font-semibold';
-    } else if (selisih_hari > 3) {
-        durasiInfo.textContent = 'Durasi ' + selisih_hari + ' hari melebihi batas maksimal 3 hari. Request akan ditolak!';
-        durasiInfo.className = 'X text-red-600 mt-1 block font-semibold';
-    } else {
-        durasiInfo.textContent = '✓ Durasi pinjam: ' + selisih_hari + ' hari (Terdaftar)';
-        durasiInfo.className = 'text-green-600 mt-1 block font-semibold';
-    }
-}
-function redirectNotifikasi() {
-    var id_buku = document.getElementById('pinjam_id_buku').value;
-    var tanggal_kembali = document.getElementById('pinjam_tgl_kembali').value;
-    if (!tanggal_kembali) {
-        alert('Tanggal kembali harus diisi!');
-        return;
-    }
-    window.location.href = '../../view/admin/notifikasi.php?id_buku=' + encodeURIComponent(id_buku) + '&tanggal_kembali=' + encodeURIComponent(tanggal_kembali);
-}
+});
 </script>
 </body>
 </html>

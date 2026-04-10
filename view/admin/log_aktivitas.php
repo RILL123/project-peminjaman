@@ -41,7 +41,7 @@
                             id="searchInput" 
                             placeholder="Cari ID, aktivitas, keterangan, buku, atau user..." 
                             value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>"
-                            class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-perpusku1 transition"
+                            class="flex-1 px-4 py-3 border border-perpusku2 rounded-xl p-4 focus:border-perpusku1 transition"
                         />
                         <button type="submit" class="bg-perpusku1 text-white px-6 py-3 rounded-lg hover:bg-perpusku2 transition font-semibold">
                             Cari

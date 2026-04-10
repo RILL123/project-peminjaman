@@ -69,6 +69,10 @@
                     <img src="../../public/image/dashboard.png" class="h-5 w-5 shrink-0" alt="Dashboard">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Home</span>
                 </a>
+                <a href="buku_dipinjam.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
+                    <img src="../../public/image/back.png" class="h-5 w-5 shrink-0" alt="Buku Dipinjam">
+                    <span class="sidebar-label font-medium text-sm group-hover:text-white">Buku Dipinjam</span>
+                </a>
             </nav>
 
             <!-- Footer - Logout -->
