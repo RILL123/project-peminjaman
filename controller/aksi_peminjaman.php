@@ -26,15 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_buku = $_POST['id_buku'] ?? null;
 
         if ($id_peminjaman && $id_buku) {
+            // Ambil jumlah yang dipinjam
+            $detail = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT jumlah FROM detail_peminjaman WHERE id_peminjaman = '$id_peminjaman' AND id_buku = '$id_buku'"));
+            $jumlah = isset($detail['jumlah']) ? (int)$detail['jumlah'] : 1;
             // Ambil data untuk log
             $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
-            
-            mysqli_query($koneksi, "UPDATE buku SET stok = stok + 1 WHERE id_buku = '$id_buku'");
+
+            // Kembalikan stok sesuai jumlah
+            mysqli_query($koneksi, "UPDATE buku SET stok = stok + $jumlah WHERE id_buku = '$id_buku'");
             mysqli_query($koneksi, "DELETE FROM detail_peminjaman WHERE id_peminjaman = '$id_peminjaman' AND id_buku = '$id_buku'");
             mysqli_query($koneksi, "DELETE FROM peminjaman WHERE id_peminjaman = '$id_peminjaman'");
 
             // Tambah log aktivitas
-            tambah_log($koneksi, $_SESSION['id_user'], 'Pengembalian Buku', "Mengembalikan buku", $id_buku);
+            tambah_log($koneksi, $_SESSION['id_user'], 'Pengembalian Buku', "Mengembalikan $jumlah buku", $id_buku);
 
             $_SESSION['message'] = 'Buku berhasil dikembalikan.';
             $_SESSION['message_type'] = 'success';
@@ -95,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_buku = $req['id_buku'];
             $nama_peminjam = $req['nama'];
             $judul_buku = $req['judul'];
+            $jumlah = isset($req['jumlah']) ? (int)$req['jumlah'] : 1;
 
             $tanggal_pinjam = date('Y-m-d');
             $tanggal_kembali = date('Y-m-d', strtotime('+3 days'));
@@ -104,14 +109,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $id_peminjaman = mysqli_insert_id($koneksi);
 
-            mysqli_query($koneksi, "INSERT INTO detail_peminjaman (id_peminjaman, id_buku)
-                                   VALUES ('$id_peminjaman','$id_buku')");
+            // Simpan jumlah ke detail_peminjaman
+            mysqli_query($koneksi, "INSERT INTO detail_peminjaman (id_peminjaman, id_buku, jumlah)
+                                   VALUES ('$id_peminjaman','$id_buku','$jumlah')");
 
-            mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
+            // Update stok sesuai jumlah
+            mysqli_query($koneksi, "UPDATE buku SET stok = stok - $jumlah WHERE id_buku = '$id_buku' AND stok >= $jumlah");
             mysqli_query($koneksi, "DELETE FROM request_peminjaman WHERE id_request = '$id_request'");
 
             // Tambah log aktivitas
-            tambah_log($koneksi, $_SESSION['id_user'], 'Terima Request Peminjaman', "Dari $nama_peminjam untuk buku $judul_buku", $id_buku);
+            tambah_log($koneksi, $_SESSION['id_user'], 'Terima Request Peminjaman', "Dari $nama_peminjam untuk buku $judul_buku ($jumlah buku)", $id_buku);
 
             $_SESSION['message'] = 'Request diterima';
             $_SESSION['message_type'] = 'success';

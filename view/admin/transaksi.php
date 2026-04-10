@@ -114,7 +114,6 @@ if (!$result) {
                         <tr class="bg-perpusku1 text-white">
                             <th class="px-6 py-4 text-left text-sm font-semibold">No</th>
                             <th class="px-6 py-4 text-left text-sm font-semibold">Nama Peminjam</th>
-                            <!-- Kolom judul, kategori, penulis dihapus, semua info di modal detail -->
                             <th class="px-6 py-4 text-left text-sm font-semibold">Tanggal Pinjam</th>
                             <th class="px-6 py-4 text-left text-sm font-semibold">Tanggal Kembali</th>
                             <th class="px-6 py-4 text-center text-sm font-semibold">Jumlah</th>
@@ -152,10 +151,10 @@ if (!$result) {
                                     '<?= htmlspecialchars($row['jumlah']) ?>',
                                     '<?= htmlspecialchars($row['cover']) ?>'
                                 )" class="bg-perpusku3 text-perpusku1 px-3 py-1 rounded shadow text-xs font-semibold transition hover:bg-yellow-400">Detail</button>
-                                <button type="button" onclick="printStrukJS('<?= $row['id_peminjaman'] ?>', '<?= htmlspecialchars($row['nama_user']) ?>', '<?= htmlspecialchars($row['id_user']) ?>', '<?= htmlspecialchars($row['judul']) ?>', '<?= htmlspecialchars($row['kategori']) ?>', '<?= htmlspecialchars($row['penulis']) ?>', '<?= htmlspecialchars($row['tanggal_pinjam']) ?>', '<?= htmlspecialchars($row['tanggal_kembali']) ?>', '<?= htmlspecialchars($row['cover']) ?>')" class="bg-perpusku3 text-perpusku1 px-3 py-1 rounded shadow text-xs font-semibold transition hover:bg-yellow-400">Print</button>
+                                <button type="button" onclick="printStrukJS('<?= $row['id_peminjaman'] ?>', '<?= htmlspecialchars($row['nama_user']) ?>', '<?= htmlspecialchars($row['id_user']) ?>', '<?= htmlspecialchars($row['judul']) ?>', '<?= htmlspecialchars($row['kategori']) ?>', '<?= htmlspecialchars($row['penulis']) ?>', '<?= htmlspecialchars($row['tanggal_pinjam']) ?>', '<?= htmlspecialchars($row['tanggal_kembali']) ?>', '<?= htmlspecialchars($row['cover']) ?>')" class="bg-perpusku2 text-white px-3 py-1 rounded shadow text-xs font-semibold transition hover:bg-gray-400">Print</button>
                                     <!-- Modal Detail Transaksi -->
-                                    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-                                        <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md mx-4 modal-animate relative">
+                                    <div id="detailModal" class="fixed inset-0 hidden z-50 flex items-center justify-center">
+                                        <div class="bg-white border border-perpusku1 rounded-lg shadow-2xl p-6 w-full max-w-md mx-4 modal-animate relative">
                                             <button onclick="closeDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-perpusku1 text-2xl font-bold">&times;</button>
                                             <h3 class="text-xl font-bold text-perpusku1 mb-4">Detail Transaksi Peminjaman</h3>
                                             <div class="space-y-2 text-sm">
