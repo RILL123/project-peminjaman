@@ -7,6 +7,38 @@
     <title>Log Aktivitas</title>
     <link rel="icon" type="image/png" href="../../public/image/perpusku.png">
     <script src="../../public/realtime.js"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes slideInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-backdrop-show {
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+        .modal-backdrop-hide {
+            animation: fadeIn 0.2s ease-in-out reverse forwards;
+        }
+        .modal-content-show {
+            animation: slideInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .modal-content-hide {
+            animation: slideInScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) reverse forwards;
+        }
+    </style>
 </head>
 <body class="bg-perpusku4 min-h-screen">
         <?php include '../partials/admin_sidebar.php'; ?>
@@ -70,7 +102,6 @@
                                 <th class="px-6 py-4 text-left text-sm font-semibold">ID</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Aktivitas</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Keterangan</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold">Buku</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Tanggal & Jam</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold print-user">Aksi</th>
                             </tr>
@@ -141,13 +172,6 @@
                                     <?= htmlspecialchars($log['keterangan']) ?>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-600">
-                                    <?php if ($log['judul_buku']): ?>
-                                        <span class="bg-perpusku2 text-white px-3 py-1 rounded-full text-xs"><?= htmlspecialchars($log['judul_buku']) ?></span>
-                                    <?php else: ?>
-                                        <span class="text-gray-400">-</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-600">
                                     <?= date('d M Y H:i', strtotime($log['tanggal'])) ?>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-600 flex gap-2 print-user">
@@ -160,7 +184,7 @@
                             </tr>
                             <?php endwhile; else: ?>
                             <tr>
-                                <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                                     <?= $search_term !== '' ? 'Tidak ada data yang cocok dengan pencarian.' : 'Belum ada data aktivitas.' ?>
                                 </td>
                             </tr>
@@ -192,9 +216,8 @@
     </div>
 
 <!-- Modal Detail Log -->
-
-
-  <div class="bg-white border border-perpusku1 rounded-xl shadow-lg w-full max-w-md p-6 relative">
+<div id="detailModal" class="hidden fixed inset-0 flex items-center justify-center z-50">
+  <div id="modalContent" class="bg-white border-3 border-perpusku1 rounded-xl shadow-lg w-full max-w-md p-6 relative">
     <button onclick="closeDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-2xl">&times;</button>
     <h3 class="text-xl font-bold mb-4 text-perpusku1">Detail Log Aktivitas</h3>
     <div class="space-y-2">
@@ -222,7 +245,6 @@ function printLaporan() {
                     <td style="padding:8px;border:1px solid #ccc;">${log.id_user}</td>
                     <td style="padding:8px;border:1px solid #ccc;">${log.aktivitas}</td>
                     <td style="padding:8px;border:1px solid #ccc;">${log.keterangan}</td>
-                    <td style="padding:8px;border:1px solid #ccc;">${log.id_buku}</td>
                     <td style="padding:8px;border:1px solid #ccc;">${formatTanggal(log.tanggal)}</td>
                 </tr>
             `).join('');
@@ -255,7 +277,6 @@ function printLaporan() {
                                     <th>ID User</th>
                                     <th>Aktivitas</th>
                                     <th>Keterangan</th>
-                                    <th>ID Buku</th>
                                     <th>Tanggal & Jam</th>
                                 </tr>
                             </thead>
@@ -301,10 +322,28 @@ function openDetailModal(id, aktivitas, keterangan, buku, user, tanggal) {
     document.getElementById('modalBuku').textContent = buku || '-';
     document.getElementById('modalUser').textContent = user;
     document.getElementById('modalTanggal').textContent = tanggal;
-    document.getElementById('detailModal').classList.remove('hidden');
+    
+    const modal = document.getElementById('detailModal');
+    const modalContent = document.getElementById('modalContent');
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('modal-backdrop-show');
+    modalContent.classList.add('modal-content-show');
 }
 function closeDetailModal() {
-    document.getElementById('detailModal').classList.add('hidden');
+    const modal = document.getElementById('detailModal');
+    const modalContent = document.getElementById('modalContent');
+    
+    modal.classList.remove('modal-backdrop-show');
+    modal.classList.add('modal-backdrop-hide');
+    modalContent.classList.remove('modal-content-show');
+    modalContent.classList.add('modal-content-hide');
+    
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('modal-backdrop-hide');
+        modalContent.classList.remove('modal-content-hide');
+    }, 300);
 }
 document.getElementById('detailModal').addEventListener('click', function(e) {
     if (e.target === this) {

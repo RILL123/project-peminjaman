@@ -154,7 +154,7 @@ if (!$result) {
                                 <button type="button" onclick="printStrukJS('<?= $row['id_peminjaman'] ?>', '<?= htmlspecialchars($row['nama_user']) ?>', '<?= htmlspecialchars($row['id_user']) ?>', '<?= htmlspecialchars($row['judul']) ?>', '<?= htmlspecialchars($row['kategori']) ?>', '<?= htmlspecialchars($row['penulis']) ?>', '<?= htmlspecialchars($row['tanggal_pinjam']) ?>', '<?= htmlspecialchars($row['tanggal_kembali']) ?>', '<?= htmlspecialchars($row['cover']) ?>')" class="bg-perpusku2 text-white px-3 py-1 rounded shadow text-xs font-semibold transition hover:bg-gray-400">Print</button>
                                     <!-- Modal Detail Transaksi -->
                                     <div id="detailModal" class="fixed inset-0 hidden z-50 flex items-center justify-center">
-                                        <div class="bg-white border border-perpusku1 rounded-lg shadow-2xl p-6 w-full max-w-md mx-4 modal-animate relative">
+                                        <div class="bg-white border-3 border-perpusku1 rounded-lg shadow-2xl p-6 w-full max-w-md mx-4 modal-animate relative">
                                             <button onclick="closeDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-perpusku1 text-2xl font-bold">&times;</button>
                                             <h3 class="text-xl font-bold text-perpusku1 mb-4">Detail Transaksi Peminjaman</h3>
                                             <div class="space-y-2 text-sm">

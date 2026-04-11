@@ -11,7 +11,7 @@ session_start();
     <link rel="icon" type="image/png" href="../../public/image/perpusku.png">
     <script src="../../public/realtime.js"></script>
 </head>
-<body class="bg-perpusku4 min-h-screen">
+<body class="font-poppins bg-perpusku4 min-h-screen">
         <?php include '../partials/admin_sidebar.php'; ?>
         <button id="showSidebarBtn" class="fixed top-4 left-4 z-40 bg-perpusku1 text-perpusku3 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition hover:bg-perpusku2" style="display:none" onclick="showSidebar()">
             <img src="../../public/image/menu.png" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -34,10 +34,10 @@ session_start();
                 </div>
 
                 <!-- Statistics Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
                     <!-- Card 1: Total Buku -->
                     <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between gap-4">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Total Buku</p>
                                 <?php
@@ -48,14 +48,14 @@ session_start();
                                 ?>
                                 <h3 class="text-3xl font-bold text-white" id="total-buku"><?= $total_buku ?></h3>
                             </div>
-                            <div class=" rounded-full p-4">
-                                <img src="../../public/image/books.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
+                            <div class=" rounded-full flex-none p-4">
+                                <img src="../../public/image/data.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
                             </div>
                         </div>
                     </div>
                     <!-- Card 2: Peminjaman Aktif -->
                     <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between gap-4">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Peminjaman Aktif</p>
                                  <?php
@@ -66,14 +66,14 @@ session_start();
                                 ?>
                                 <h3 class="text-3xl font-bold text-white" id="total-peminjaman"><?= $total_peminjaman ?></h3>
                             </div>
-                            <div class=" rounded-full p-4">
+                            <div class=" rounded-full flex-none p-4">
                                 <img src="../../public/image/peminjam.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
                             </div>
                         </div>
                     </div>
                     <!-- Card 3: Total User -->
                     <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between gap-4">
                             <div>
                                 <p class="text-white text-sm font-semibold mb-2">Total User</p>
                                 <?php
@@ -84,16 +84,16 @@ session_start();
                                 ?>
                                 <h3 class="text-3xl font-bold text-white" id="total-user"><?= $total_user ?></h3>
                             </div>
-                            <div class="bg-opacity-10 rounded-full p-4">
+                            <div class="bg-opacity-10 rounded-full flex-none p-4">
                                 <img src="../../public/image/account.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
                             </div>
                         </div>
                     </div>
-                    <!-- Card 4: Pengembalian Tertunda -->
+                    <!-- Card 4: Peminjaman Tertunda -->
                     <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-white text-sm font-semibold mb-2">Tertunda</p>
+                                <p class="text-white text-sm font-semibold mb-2">Peminjaman Tertunda</p>
                                  <?php
                                 include '../../model/koneksi.php';
                                 $result = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM request_peminjaman");
@@ -102,8 +102,28 @@ session_start();
                                 ?>
                                 <h3 class="text-3xl font-bold text-white" id="total-request"><?= $total_request ?></h3>
                             </div>
-                            <div class="bg-opacity-10 rounded-full p-4">
-                                <img src="../../public/image/tunggu.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
+                            <div class="bg-opacity-10 rounded-full flex-none p-4">
+                                <img src="../../public/image/pinjam.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 5: Pengembalian Tertunda -->
+                    <div class="bg-perpusku1 rounded-xl shadow-md hover:shadow-lg transition p-6 border-t">
+                        <div class="flex items-center justify-between gap-4">
+                            <div>
+                                <p class="text-white text-sm font-semibold mb-2">Pengembalian Tertunda</p>
+                                 <?php
+                                include '../../model/koneksi.php';
+                                $result = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM peminjaman p 
+                                    WHERE p.tanggal_kembali < CURDATE() 
+                                    AND p.id_peminjaman NOT IN (SELECT id_peminjaman FROM pengembalian)");
+                                $row = mysqli_fetch_assoc($result);
+                                $total_kembali_tertunda = $row['total'];
+                                ?>
+                                <h3 class="text-3xl font-bold text-white" id="total-kembali-tertunda"><?= $total_kembali_tertunda ?></h3>
+                            </div>
+                            <div class="bg-opacity-10 rounded-full flex-none ">
+                                <img src="../../public/image/back.png" class="h-12 w-12" style="filter: brightness(0) invert(1);" />
                             </div>
                         </div>
                     </div>

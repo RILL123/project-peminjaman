@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="image/perpusku.png">
     <title>Login - Perpusku</title>
 </head>
-<body class="min-h-screen bg-linear-to-br from-perpusku1 to-perpusku2 flex items-center justify-center p-4">
+<body class="font-poppins min-h-screen bg-linear-to-br from-perpusku1 to-perpusku2 flex items-center justify-center p-4">
     <!-- Background decoration -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute top-20 left-10 w-72 h-72 bg-perpusku2 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>

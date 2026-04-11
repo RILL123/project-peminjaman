@@ -7,8 +7,8 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
-            poppins: ['Poppins', 'sans-serif'],
+            sans: ['Poppins-regular.ttf', 'sans-serif'],
+            poppins: ['Poppins-regular.ttf', 'sans-serif'],
         },
         colors: {
             perpusku1: '#1A3263',
