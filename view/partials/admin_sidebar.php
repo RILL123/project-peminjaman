@@ -74,20 +74,20 @@
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Data Buku</span>
                 </a>
                 <a href="transaksi.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
-                    <img src="../../public/image/pinjam.png" class="h-5 w-5 shrink-0" alt="Peminjaman">
+                    <img src="../../public/image/data.png" class="h-5 w-5 shrink-0" alt="Peminjaman">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Data Peminjaman</span>
                 </a>
-                <a href="../admin/crud_user.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
-                    <img src="../../public/image/user.png" class="h-5 w-5 shrink-0" alt="User">
-                    <span class="sidebar-label font-medium text-sm group-hover:text-white">Data User</span>
-                </a>
                 <a href="../admin/notifikasi.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
-                    <img src="../../public/image/bell.png" class="h-5 w-5 shrink-0" alt="Notifikasi">
+                    <img src="../../public/image/pinjam.png" class="h-5 w-5 shrink-0" alt="Notifikasi">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Request Peminjaman</span>
                 </a>
                 <a href="request_pengembalian.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
                     <img src="../../public/image/back.png" class="h-5 w-5 shrink-0" alt="Request Pengembalian">
                     <span class="sidebar-label font-medium text-sm group-hover:text-white">Request Pengembalian</span>
+                </a>
+                <a href="../admin/crud_user.php" class="flex items-center gap-3 px-4 py-3 rounded-lg text-perpusku4 hover:bg-perpusku2 transition duration-300 sidebar-link group">
+                    <img src="../../public/image/user.png" class="h-5 w-5 shrink-0" alt="User">
+                    <span class="sidebar-label font-medium text-sm group-hover:text-white">Data User</span>
                 </a>
             </nav>
 

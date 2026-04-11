@@ -58,8 +58,13 @@
                 </div>
 
                 <!-- Log Aktivitas Tabel -->
-                <div class="bg-white rounded-xl shadow-md overflow-x-auto" style="max-height: 600px; overflow-y: auto;">
-                    <table class="w-full">
+                <div class="mb-4 flex justify-end">
+                    <button onclick="printLaporan()" class="bg-perpusku1 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-perpusku2 transition">
+                        Cetak Laporan
+                    </button>
+                </div>
+                <div id="printArea" class="bg-white rounded-xl shadow-md overflow-x-auto" style="max-height: 600px; overflow-y: auto;">
+                    <table class="w-full" id="logTable">
                         <thead>
                             <tr class="bg-perpusku1 text-white">
                                 <th class="px-6 py-4 text-left text-sm font-semibold">ID</th>
@@ -67,7 +72,7 @@
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Keterangan</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Buku</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Tanggal & Jam</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold">Aksi</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold print-user">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,17 +97,8 @@
                                     OR u.nama LIKE '%$search_term_escaped%')";
                             }
 
-                            // jumlah total data untuk pagination
-                            $count_query = "SELECT COUNT(*) AS total FROM log_aktivitas l
-                                LEFT JOIN users u ON l.id_user = u.id_user
-                                LEFT JOIN buku b ON l.id_buku = b.id_buku
-                                $where_clause";
-                            $count_result = mysqli_query($koneksi, $count_query);
-                            $count_row = mysqli_fetch_assoc($count_result);
-                            $total_records = $count_row['total'];
-                            $total_pages = ceil($total_records / $items_per_page);
-
-                            // get log data
+                            // Query untuk print: ambil semua data jika sedang print
+                            $isPrint = isset($_GET['print']) && $_GET['print'] == '1';
                             $log_query = "SELECT l.*, 
                                 u.nama AS nama_user,
                                 b.judul AS judul_buku
@@ -110,10 +106,28 @@
                                 LEFT JOIN users u ON l.id_user = u.id_user
                                 LEFT JOIN buku b ON l.id_buku = b.id_buku
                                 $where_clause
-                                ORDER BY l.tanggal DESC
-                                LIMIT $items_per_page OFFSET $offset";
+                                ORDER BY l.tanggal DESC";
+                            if (!$isPrint) {
+                                $log_query .= " LIMIT $items_per_page OFFSET $offset";
+                            }
                             $log_result = mysqli_query($koneksi, $log_query);
                             
+                            // jumlah total data untuk pagination
+                            $count_query = "SELECT COUNT(*) AS total FROM log_aktivitas l
+                                LEFT JOIN users u ON l.id_user = u.id_user
+                                LEFT JOIN buku b ON l.id_buku = b.id_buku
+                                $where_clause";
+                            $count_result = mysqli_query($koneksi, $count_query);
+                            $count_row = mysqli_fetch_assoc($count_result);
+                            $total_records = $count_row['total'] ?? 0;
+                            if (!isset($isPrint)) $isPrint = false;
+                            if ($isPrint) {
+                                $total_pages = 1;
+                                $current_page = 1;
+                            } else {
+                                $total_pages = ceil($total_records / $items_per_page);
+                            }
+
                             if (mysqli_num_rows($log_result) > 0):
                                 $no = $offset + 1;
                                 while ($log = mysqli_fetch_assoc($log_result)):
@@ -136,13 +150,12 @@
                                 <td class="px-6 py-4 text-sm text-gray-600">
                                     <?= date('d M Y H:i', strtotime($log['tanggal'])) ?>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-600 flex gap-2">
-                                    <button onclick="openDetailModal(<?= $log['id_log'] ?>, '<?= htmlspecialchars($log['aktivitas']) ?>', '<?= htmlspecialchars($log['keterangan']) ?>', '<?= htmlspecialchars($log['judul_buku'] ?? '') ?>', '<?= htmlspecialchars($log['nama_user'] ?? 'Admin') ?>', '<?= date('d M Y H:i', strtotime($log['tanggal'])) ?>')" class="bg-perpusku1 text-white px-3 py-1 rounded hover:bg-perpusku2 transition text-xs font-semibold">
-                                        Detail
-                                    </button>
-                                    <button onclick="deleteLog(<?= $log['id_log'] ?>)" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition text-xs font-semibold">
-                                        Hapus
-                                    </button>
+                                <td class="px-6 py-4 text-sm text-gray-600 flex gap-2 print-user">
+                                    <span class="hidden print:inline"><?= htmlspecialchars($log['nama_user'] ?? 'Admin') ?></span>
+                                    <span class="print:hidden">
+                                        <button onclick="openDetailModal('<?= htmlspecialchars($log['id_log']) ?>','<?= htmlspecialchars(addslashes($log['aktivitas'])) ?>','<?= htmlspecialchars(addslashes($log['keterangan'])) ?>','<?= htmlspecialchars(addslashes($log['judul_buku'] ?? '-')) ?>','<?= htmlspecialchars(addslashes($log['nama_user'] ?? 'Admin')) ?>','<?= date('d M Y H:i', strtotime($log['tanggal'])) ?>')" class="bg-perpusku1 text-white px-3 py-1 rounded hover:bg-perpusku2 transition text-xs font-semibold mr-1">Detail</button>
+                                        <button onclick="deleteLog(<?= $log['id_log'] ?>)" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition text-xs font-semibold">Hapus</button>
+                                    </span>
                                 </td>
                             </tr>
                             <?php endwhile; else: ?>
@@ -178,111 +191,150 @@
         </div>
     </div>
 
-    <!-- Modal Detail -->
-    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50" style="">
-        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-perpusku1">Detail Aktivitas</h3>
-                <button onclick="closeDetailModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <p class="text-sm text-gray-500 font-semibold">ID</p>
-                    <p id="modalId" class="text-lg text-gray-800"></p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 font-semibold">Aktivitas</p>
-                    <p id="modalAktivitas" class="text-lg text-gray-800"></p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 font-semibold">Keterangan</p>
-                    <p id="modalKeterangan" class="text-lg text-gray-800"></p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 font-semibold">Buku</p>
-                    <p id="modalBuku" class="text-lg text-gray-800"></p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 font-semibold">User</p>
-                    <p id="modalUser" class="text-lg text-gray-800"></p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 font-semibold">Tanggal & Jam</p>
-                    <p id="modalTanggal" class="text-lg text-gray-800"></p>
-                </div>
-            </div>
+<!-- Modal Detail Log -->
 
-            <div class="mt-8 flex gap-3">
-                <button onclick="closeDetailModal()" class="flex-1 bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition font-semibold">
-                    Tutup
-                </button>
-            </div>
-        </div>
+
+  <div class="bg-white border border-perpusku1 rounded-xl shadow-lg w-full max-w-md p-6 relative">
+    <button onclick="closeDetailModal()" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+    <h3 class="text-xl font-bold mb-4 text-perpusku1">Detail Log Aktivitas</h3>
+    <div class="space-y-2">
+      <div><span class="font-semibold">ID Log:</span> <span id="modalId"></span></div>
+      <div><span class="font-semibold">Aktivitas:</span> <span id="modalAktivitas"></span></div>
+      <div><span class="font-semibold">Keterangan:</span> <span id="modalKeterangan"></span></div>
+      <div><span class="font-semibold">Buku:</span> <span id="modalBuku"></span></div>
+      <div><span class="font-semibold">User:</span> <span id="modalUser"></span></div>
+      <div><span class="font-semibold">Tanggal & Jam:</span> <span id="modalTanggal"></span></div>
     </div>
+  </div>
+</div>
 
-    <script src="../../public/sidebar.js"></script>
-    <script>
-        // update jumlah
-        const logRows = document.querySelectorAll('.log-row');
-        const totalDataSpan = document.getElementById('totalData');
-        const displayedDataSpan = document.getElementById('displayedData');
-
-        // inisialisasi jumlah data
-        function initCounts() {
-            displayedDataSpan.textContent = logRows.length;
-            totalDataSpan.textContent = document.querySelector('.text-sm.text-gray-600 .font-semibold:nth-child(5)').textContent;
-        }
-
-        initCounts();
-
-        // Modal Detail
-        function openDetailModal(id, aktivitas, keterangan, buku, user, tanggal) {
-            document.getElementById('modalId').textContent = id;
-            document.getElementById('modalAktivitas').textContent = aktivitas;
-            document.getElementById('modalKeterangan').textContent = keterangan;
-            document.getElementById('modalBuku').textContent = buku || '-';
-            document.getElementById('modalUser').textContent = user;
-            document.getElementById('modalTanggal').textContent = tanggal;
-            document.getElementById('detailModal').classList.remove('hidden');
-        }
-
-        function closeDetailModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('detailModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeDetailModal();
-            }
-        });
-
-        // Delete Log
-        function deleteLog(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                fetch('../../controller/aksi_hapus_log.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: 'id_log=' + id
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Data berhasil dihapus!');
-                        location.reload();
-                    } else {
-                        alert('Gagal menghapus data: ' + data.message);
+<script>
+function printLaporan() {
+    fetch('../../controller/get_all_log.php')
+        .then(res => {
+            if (!res.ok) throw new Error('HTTP error');
+            return res.json();
+        })
+        .then(data => {
+            let tableRows = data.map(log => `
+                <tr>
+                    <td style="padding:8px;border:1px solid #ccc;">${log.id_log}</td>
+                    <td style="padding:8px;border:1px solid #ccc;">${log.id_user}</td>
+                    <td style="padding:8px;border:1px solid #ccc;">${log.aktivitas}</td>
+                    <td style="padding:8px;border:1px solid #ccc;">${log.keterangan}</td>
+                    <td style="padding:8px;border:1px solid #ccc;">${log.id_buku}</td>
+                    <td style="padding:8px;border:1px solid #ccc;">${formatTanggal(log.tanggal)}</td>
+                </tr>
+            `).join('');
+            let html = `
+                <html>
+                <head>
+                    <title>Cetak Laporan Log Aktivitas</title>
+                    <link href='../../src/output.css' rel='stylesheet'>
+                    <style>
+                        @media print {
+                            body * { display: none !important; }
+                            #printArea, #printArea * { display: revert !important; box-shadow: none !important; background: white !important; }
+                            #printArea { position: static !important; margin: 0 !important; padding: 0 !important; }
+                        }
+                        table { border-collapse: collapse; width: 100%; }
+                        th, td { border: 1px solid #ccc; padding: 8px; }
+                        th { background: #1e293b; color: #fff; }
+                    </style>
+                </head>
+                <body>
+                    <div class='text-center mb-6'>
+                        <h2 class='text-2xl font-bold text-perpusku1'>Laporan Log Aktivitas</h2>
+                        <p class='text-perpusku2'>Dicetak pada: ${formatTanggalCetak(new Date())}</p>
+                    </div>
+                    <div id='printArea' class='bg-white rounded-xl shadow-md overflow-x-auto'>
+                        <table class='w-full'>
+                            <thead>
+                                <tr>
+                                    <th>ID Log</th>
+                                    <th>ID User</th>
+                                    <th>Aktivitas</th>
+                                    <th>Keterangan</th>
+                                    <th>ID Buku</th>
+                                    <th>Tanggal & Jam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tableRows}
+                            </tbody>
+                        </table>
+                    </div>
+                    <script>
+                    window.onload = function() {
+                        setTimeout(function() {
+                            window.print();
+                            window.onafterprint = function() { window.close(); };
+                        }, 300);
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat menghapus data');
-                });
+                    <\/script>
+                </body>
+                </html>
+            `;
+            let printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.open();
+                printWindow.document.write(html);
+                printWindow.document.close();
+            } else {
+                alert('Popup diblokir! Izinkan popup untuk mencetak laporan.');
             }
-        }
-    </script>
+        })
+        .catch(() => alert('Gagal mengambil data log untuk cetak.'));
+}
+function formatTanggal(tgl) {
+    const d = new Date(tgl);
+    if (isNaN(d)) return '-';
+    return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+function formatTanggalCetak(d) {
+    return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+function openDetailModal(id, aktivitas, keterangan, buku, user, tanggal) {
+    document.getElementById('modalId').textContent = id;
+    document.getElementById('modalAktivitas').textContent = aktivitas;
+    document.getElementById('modalKeterangan').textContent = keterangan;
+    document.getElementById('modalBuku').textContent = buku || '-';
+    document.getElementById('modalUser').textContent = user;
+    document.getElementById('modalTanggal').textContent = tanggal;
+    document.getElementById('detailModal').classList.remove('hidden');
+}
+function closeDetailModal() {
+    document.getElementById('detailModal').classList.add('hidden');
+}
+document.getElementById('detailModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeDetailModal();
+    }
+});
+function deleteLog(id) {
+    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+        fetch('../../controller/aksi_hapus_log.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'id_log=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Data berhasil dihapus!');
+                location.reload();
+            } else {
+                alert('Gagal menghapus data: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menghapus data');
+        });
+    }
+}
+</script>
 </body>
 </html>

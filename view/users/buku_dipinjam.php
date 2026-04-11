@@ -49,13 +49,6 @@ $count_buku = mysqli_num_rows($buku_dipinjam);
         </div>
     </div>
 
-    <!-- Tombol Riwayat Peminjaman -->
-    <div class="mb-6 flex justify-end">
-        <a href="riwayat_peminjaman.php" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow transition">
-            Riwayat Peminjaman
-        </a>
-    </div>
-
     <!-- Buku Dipinjam List - Card Kecil -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <?php if ($count_buku > 0): ?>

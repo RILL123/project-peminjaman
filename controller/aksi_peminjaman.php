@@ -57,6 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_buku = $_POST['id_buku'];
         $tanggal_pinjam = $_POST['tanggal_pinjam'];
         $tanggal_kembali = $_POST['tanggal_kembali'];
+        $jumlah = isset($_POST['jumlah']) ? (int)$_POST['jumlah'] : 1;
+
+        // Validasi stok
+        $stok_row = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT stok, judul FROM buku WHERE id_buku = '$id_buku'"));
+        $stok = (int)($stok_row['stok'] ?? 0);
+        $judul_buku = $stok_row['judul'] ?? '';
+        if ($jumlah > $stok) {
+            $_SESSION['message'] = 'Jumlah pinjam melebihi stok buku!';
+            $_SESSION['message_type'] = 'error';
+            header('Location: ../view/admin/crud_transaksi.php');
+            exit;
+        }
 
         $q1 = "INSERT INTO peminjaman (id_user, tanggal_pinjam, tanggal_kembali)
                VALUES ('$id_user', '$tanggal_pinjam', '$tanggal_kembali')";
@@ -64,17 +76,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mysqli_query($koneksi, $q1)) {
             $id_peminjaman = mysqli_insert_id($koneksi);
 
-            $q2 = "INSERT INTO detail_peminjaman (id_peminjaman, id_buku)
-                   VALUES ('$id_peminjaman', '$id_buku')";
+            $q2 = "INSERT INTO detail_peminjaman (id_peminjaman, id_buku, jumlah)
+                   VALUES ('$id_peminjaman', '$id_buku', '$jumlah')";
 
             if (mysqli_query($koneksi, $q2)) {
                 // Ambil data buku untuk log
                 $buku_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT judul FROM buku WHERE id_buku = '$id_buku'"));
                 
-                mysqli_query($koneksi, "UPDATE buku SET stok = stok - 1 WHERE id_buku = '$id_buku' AND stok > 0");
+                mysqli_query($koneksi, "UPDATE buku SET stok = stok - $jumlah WHERE id_buku = '$id_buku' AND stok >= $jumlah");
 
                 // Tambah log aktivitas
-                tambah_log($koneksi, $_SESSION['id_user'], 'Tambah Peminjaman', "Membuat peminjaman baru", $id_buku);
+                tambah_log($koneksi, $_SESSION['id_user'], 'Tambah Peminjaman', "Membuat peminjaman baru sebanyak $jumlah buku", $id_buku);
 
                 $_SESSION['message'] = 'Berhasil tambah peminjaman';
                 $_SESSION['message_type'] = 'success';

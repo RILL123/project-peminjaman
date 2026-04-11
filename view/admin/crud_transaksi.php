@@ -14,41 +14,56 @@ include '../../model/koneksi.php';
     <?php include '../partials/admin_sidebar.php'; ?>
     <div id="mainContent" class="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300 p-4 md:p-6">
         <div class="mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-perpusku1 mb-2 flex items-center gap-2">
-                <svg class="w-8 h-8 text-perpusku3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                Tambah Data Peminjaman
+            <h1 class="text-3xl md:text-4xl font-bold text-perpusku1 mb-2">
+                + Tambah Data Peminjaman
             </h1>
             <p class="text-perpusku2">Isi data peminjaman di bawah ini.</p>
         </div>
-        <div class="bg-white rounded-xl shadow-xl max-w-xl mx-auto w-full overflow-hidden border border-perpusku2">
-            <form action="../../controller/aksi_peminjaman.php" method="POST" class="p-8">
+        <div class="bg-white rounded-xl shadow-xl max-w-2xl mx-auto w-full overflow-hidden">
+            <div class="bg-linear-to-r from-perpusku1 to-perpusku2 text-white p-6">
+                <h2 class="text-2xl font-bold">Informasi Peminjaman</h2>
+            </div>
+            <form action="../../controller/aksi_peminjaman.php" method="POST" class="p-6 md:p-8">
                 <input type="hidden" name="aksi" value="tambah">
-                <div class="mb-4">
-                    <label class="block font-semibold text-perpusku1 mb-1">Peminjam</label>
-                    <input type="text" id="userInput" class="w-full border-2 border-perpusku4 rounded-lg p-3" placeholder="Ketik nama peminjam..." autocomplete="off" required>
-                    <input type="hidden" name="id_user" id="userIdHidden" required>
-                    <div id="userSuggestions" class="absolute z-10 bg-white border border-perpusku4 rounded-lg mt-1 w-full shadow-lg hidden"></div>
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-perpusku1 font-bold text-sm mb-2">Peminjam *</label>
+                        <input type="text" id="userInput" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" placeholder="Ketik nama peminjam..." autocomplete="off" required>
+                        <input type="hidden" name="id_user" id="userIdHidden" required>
+                        <div id="userSuggestions" class="absolute z-10 bg-white border border-perpusku4 rounded-lg mt-1 w-full shadow-lg hidden"></div>
+                    </div>
+                    <div>
+                        <label class="block text-perpusku1 font-bold text-sm mb-2">Buku *</label>
+                        <input type="text" id="bukuInput" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" placeholder="Ketik judul buku..." autocomplete="off" required>
+                        <input type="hidden" name="id_buku" id="bukuIdHidden" required>
+                        <div id="bukuSuggestions" class="absolute z-10 bg-white border border-perpusku4 rounded-lg mt-1 w-full shadow-lg hidden max-h-64 overflow-y-auto"></div>
+                        <div id="bukuPreview" class="mt-2 flex items-center gap-3"></div>
+                    </div>
+                    <div>
+                        <label class="block text-perpusku1 font-bold text-sm mb-2">Tanggal Pinjam *</label>
+                        <input type="date" name="tanggal_pinjam" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" required>
+                    </div>
+                    <div>
+                        <label class="block text-perpusku1 font-bold text-sm mb-2">Tanggal Kembali *</label>
+                        <input type="date" name="tanggal_kembali" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" required>
+                    </div>
+                    <div>
+                        <label class="block text-perpusku1 font-bold text-sm mb-2">Jumlah Buku yang Dipinjam *</label>
+                        <input type="number" name="jumlah" min="1" class="w-full border-2 border-perpusku4 rounded-lg p-3 focus:border-perpusku2 focus:outline-none transition focus:ring-2 focus:ring-perpusku3" value="1" required>
+                    </div>
                 </div>
-                <div class="mb-4 relative">
-                    <label class="block font-semibold text-perpusku1 mb-1">Buku</label>
-                    <input type="text" id="bukuInput" class="w-full border-2 border-perpusku4 rounded-lg p-3" placeholder="Ketik judul buku..." autocomplete="off" required>
-                    <input type="hidden" name="id_buku" id="bukuIdHidden" required>
-                    <div id="bukuSuggestions" class="absolute z-10 bg-white border border-perpusku4 rounded-lg mt-1 w-full shadow-lg hidden max-h-64 overflow-y-auto"></div>
-                    <div id="bukuPreview" class="mt-2 flex items-center gap-3"></div>
-                </div>
-                <div class="mb-4">
-                    <label class="block font-semibold text-perpusku1 mb-1">Tanggal Pinjam</label>
-                    <input type="date" name="tanggal_pinjam" class="w-full border-2 border-perpusku4 rounded-lg p-3" required>
-                </div>
-                <div class="mb-6">
-                    <label class="block font-semibold text-perpusku1 mb-1">Tanggal Kembali</label>
-                    <input type="date" name="tanggal_kembali" class="w-full border-2 border-perpusku4 rounded-lg p-3" required>
-                </div>
-                <div class="flex gap-2">
-                    <button type="submit" class="bg-perpusku1 hover:bg-perpusku2 text-white px-6 py-2 rounded-lg font-bold transition">Simpan</button>
-                    <a href="transaksi.php" class="bg-gray-300 hover:bg-gray-400 text-perpusku1 px-6 py-2 rounded-lg font-bold transition text-center">Batal</a>
+                <div class="flex gap-3 mt-8 pt-6 border-t border-perpusku4">
+                    <button type="submit" class="flex-1 bg-perpusku1 hover:bg-perpusku2 text-white px-6 py-3 rounded-lg font-bold transition duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                        <span>Simpan</span>
+                    </button>
+                    <a href="transaksi.php" class="flex-1 bg-gray-300 hover:bg-gray-400 text-perpusku1 px-6 py-3 rounded-lg font-bold transition duration-300 text-center flex items-center justify-center gap-2">
+                        <span>Batal</span>
+                    </a>
                 </div>
             </form>
+        </div>
+        <div class="bg-perpusku3 bg-opacity-20 border border-perpusku3 rounded-lg p-4 mt-6 max-w-2xl mx-auto w-full">
+            <p class="text-perpusku1 text-sm"><strong>ℹ️ Catatan:</strong> Semua field yang bertanda (*) wajib diisi. Pastikan data yang Anda masukkan sudah benar sebelum menyimpan.</p>
         </div>
     </div>
     <script>
