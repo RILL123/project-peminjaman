@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Apr 2026 pada 09.46
+-- Waktu pembuatan: 15 Apr 2026 pada 05.03
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -47,13 +47,13 @@ INSERT INTO `buku` (`id_buku`, `cover`, `judul`, `kategori`, `penulis`, `tahun`,
 (7, 'Feel_The_Nature_Origin.jpg', 'Feel The Nature Origin', 'Non-Fiksi', 'Steven', '2020', 45, '2026-01-29 07:54:41'),
 (8, 'Wild_Life.jpg', 'Wild Life', 'Ensiklopedia', 'Edi Kurniawan', '2026', 89, '2026-01-29 07:55:59'),
 (9, 'Adventure_Hikes.jpg', 'Adventure Hikes', 'Non-Fiksi', 'Edi Kurniawan', '2022', 50, '2026-01-29 08:02:52'),
-(10, 'The_Bike_Guy.jpg', 'The Bike Guy', 'Fiksi', 'Edi Kurniawan', '2024', 96, '2026-01-29 08:07:08'),
+(10, 'The_Bike_Guy.jpg', 'The Bike Guy', 'Fiksi', 'Edi Kurniawan', '2024', 94, '2026-01-29 08:07:08'),
 (11, 'The_World_Need_More_Love.jpg', 'The World Need More Love', 'Non-Fiksi', 'Steven', '2024', 67, '2026-01-29 08:12:25'),
 (14, 'Wild_Adventure.jpg', 'Wild Adventure', 'Novel', 'Fira Feona', '2025', 77, '2026-01-29 09:37:45'),
 (17, 'Balis_Day_of_Silence.jpg', 'Bali\'s Day of Silence', 'Novel', 'Fira Feona', '2025', 45, '2026-01-29 09:45:57'),
 (18, 'Choir_Festival.jpg', 'Choir Festival', 'Novel', 'Fira Feona', '2026', 88, '2026-01-29 09:52:20'),
 (19, 'Camp_V.jpg', 'Camp V', 'Novel', 'Fira Feona', '2022', 83, '2026-01-29 10:13:13'),
-(20, 'Sebuah_Pohon.jpg', 'Sebuah Pohon', 'Novel', 'Fira Feona', '2026', 49, '2026-01-29 10:38:15'),
+(20, 'Sebuah_Pohon.jpg', 'Sebuah Pohon', 'Novel', 'Fira Feona', '2026', 50, '2026-01-29 10:38:15'),
 (21, 'Alam.jpg', 'Alam', 'Novel', 'Fira Feona', '2026', 31, '2026-01-29 10:40:50'),
 (22, 'Celebrate_Forest.jpg', 'Celebrate Forest', 'Ensiklopedia', 'Steven', '2023', 40, '2026-01-29 10:44:01'),
 (23, 'World_Forest_Day.jpg', 'World Forest Day', 'Non-Fiksi', 'Steven', '2016', 72, '2026-01-29 10:48:47'),
@@ -77,20 +77,8 @@ CREATE TABLE `detail_peminjaman` (
 --
 
 INSERT INTO `detail_peminjaman` (`id_detail`, `id_peminjaman`, `id_buku`, `jumlah`) VALUES
-(78, 59, 20, 1);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `laporan`
---
-
-CREATE TABLE `laporan` (
-  `id_laporan` int(11) NOT NULL,
-  `jenis_laporan` enum('peminjaman','pengembalian','denda') NOT NULL,
-  `tanggal` date NOT NULL,
-  `keterangan` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(80, 61, 10, 1),
+(81, 62, 10, 1);
 
 -- --------------------------------------------------------
 
@@ -275,7 +263,24 @@ INSERT INTO `log_aktivitas` (`id_log`, `id_user`, `aktivitas`, `keterangan`, `id
 (215, 2, 'Login User', 'User login ke sistem', NULL, '2026-04-11 07:26:29'),
 (216, 2, 'Request Pengembalian', 'Meminta pengembalian buku: Sebuah Pohon', 20, '2026-04-11 07:26:44'),
 (217, 1, 'Login Admin', 'Admin login ke sistem', NULL, '2026-04-11 07:26:52'),
-(218, 1, 'Login Admin', 'Admin login ke sistem', NULL, '2026-04-11 07:40:12');
+(218, 1, 'Login Admin', 'Admin login ke sistem', NULL, '2026-04-11 07:40:12'),
+(219, 1, 'Login Admin', 'Admin login ke sistem', NULL, '2026-04-15 04:19:02'),
+(220, 2, 'Login User', 'User login ke sistem', NULL, '2026-04-15 04:21:05'),
+(221, 2, 'Request Peminjaman', 'Request pinjam 1 buku: The Bike Guy selama 3 hari', 10, '2026-04-15 04:21:32'),
+(222, 2, 'Request Peminjaman', 'Request pinjam 1 buku: Feel the Nature selama 3 hari', 6, '2026-04-15 04:21:43'),
+(223, 1, 'Terima Request Peminjaman', 'Dari Rill untuk buku Feel the Nature (1 buku)', 6, '2026-04-15 04:22:00'),
+(226, 2, 'Request Peminjaman', 'Request pinjam 1 buku: The Bike Guy selama 3 hari', 10, '2026-04-15 04:27:41'),
+(227, 1, 'Setujui Pengembalian', 'Buku: Sebuah Pohon dari Rill', 20, '2026-04-15 04:27:53'),
+(228, 1, 'Terima Request Peminjaman', 'Dari Rill untuk buku The Bike Guy (1 buku)', 10, '2026-04-15 04:27:58'),
+(229, 1, 'Terima Request Peminjaman', 'Dari Rill untuk buku The Bike Guy (1 buku)', 10, '2026-04-15 04:27:59'),
+(230, 2, 'Request Peminjaman', 'Request pinjam 1 buku: Choir Festival selama 3 hari', 18, '2026-04-15 04:28:03'),
+(231, 2, 'Request Peminjaman', 'Request pinjam 1 buku: Sebuah Pohon selama 3 hari', 20, '2026-04-15 04:28:05'),
+(232, 2, 'Request Peminjaman', 'Request pinjam 1 buku: The World Need More Love selama 3 hari', 11, '2026-04-15 04:28:07'),
+(233, 2, 'Request Pengembalian', 'Meminta pengembalian buku: The Bike Guy', 10, '2026-04-15 04:28:27'),
+(234, 2, 'Request Pengembalian', 'Meminta pengembalian buku: The Bike Guy', 10, '2026-04-15 04:28:28'),
+(235, 2, 'Request Pengembalian', 'Meminta pengembalian buku: Feel the Nature', 6, '2026-04-15 04:28:31'),
+(236, 1, 'Login Admin', 'Admin login ke sistem', NULL, '2026-04-15 05:02:21'),
+(237, 1, 'Pengembalian Buku', 'Mengembalikan 1 buku', 6, '2026-04-15 05:02:36');
 
 -- --------------------------------------------------------
 
@@ -296,21 +301,8 @@ CREATE TABLE `peminjaman` (
 --
 
 INSERT INTO `peminjaman` (`id_peminjaman`, `id_user`, `tanggal_pinjam`, `tanggal_kembali`, `jumlah`) VALUES
-(59, 2, '2026-04-11', '2026-04-13', 1);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `pengembalian`
---
-
-CREATE TABLE `pengembalian` (
-  `id_pengembalian` int(11) NOT NULL,
-  `id_peminjaman` int(11) NOT NULL,
-  `tanggal_dikembalikan` date NOT NULL,
-  `terlambat` int(11) DEFAULT 0,
-  `denda` decimal(10,2) DEFAULT 0.00
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(61, 2, '2026-04-15', '2026-04-18', 1),
+(62, 2, '2026-04-15', '2026-04-18', 1);
 
 -- --------------------------------------------------------
 
@@ -329,6 +321,15 @@ CREATE TABLE `request_peminjaman` (
   `status` enum('pending','diterima','ditolak') DEFAULT 'pending',
   `alasan_penolakan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `request_peminjaman`
+--
+
+INSERT INTO `request_peminjaman` (`id_request`, `id_user`, `id_buku`, `tanggal_pinjam`, `tanggal_kembali`, `jumlah`, `tanggal_request`, `status`, `alasan_penolakan`) VALUES
+(48, 2, 18, '2026-04-15', '2026-04-18', 1, '2026-04-15 09:28:03', 'pending', NULL),
+(49, 2, 20, '2026-04-15', '2026-04-18', 1, '2026-04-15 09:28:05', 'pending', NULL),
+(50, 2, 11, '2026-04-15', '2026-04-18', 1, '2026-04-15 09:28:07', 'pending', NULL);
 
 -- --------------------------------------------------------
 
@@ -352,7 +353,8 @@ CREATE TABLE `request_pengembalian` (
 --
 
 INSERT INTO `request_pengembalian` (`id_request_kembali`, `id_peminjaman`, `id_user`, `id_buku`, `tanggal_request`, `status`, `tanggal_approved`, `catatan_admin`) VALUES
-(7, 59, 2, 20, '2026-04-11 07:26:44', 'pending', NULL, NULL);
+(8, 61, 2, 10, '2026-04-15 04:28:27', 'pending', NULL, NULL),
+(9, 62, 2, 10, '2026-04-15 04:28:28', 'pending', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -399,12 +401,6 @@ ALTER TABLE `detail_peminjaman`
   ADD KEY `fk_detail_buku` (`id_buku`);
 
 --
--- Indeks untuk tabel `laporan`
---
-ALTER TABLE `laporan`
-  ADD PRIMARY KEY (`id_laporan`);
-
---
 -- Indeks untuk tabel `log_aktivitas`
 --
 ALTER TABLE `log_aktivitas`
@@ -418,13 +414,6 @@ ALTER TABLE `log_aktivitas`
 ALTER TABLE `peminjaman`
   ADD PRIMARY KEY (`id_peminjaman`),
   ADD KEY `fk_peminjaman_user` (`id_user`);
-
---
--- Indeks untuk tabel `pengembalian`
---
-ALTER TABLE `pengembalian`
-  ADD PRIMARY KEY (`id_pengembalian`),
-  ADD KEY `fk_pengembalian_peminjaman` (`id_peminjaman`);
 
 --
 -- Indeks untuk tabel `request_peminjaman`
@@ -460,49 +449,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `buku`
 --
 ALTER TABLE `buku`
-  MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_peminjaman`
 --
 ALTER TABLE `detail_peminjaman`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
-
---
--- AUTO_INCREMENT untuk tabel `laporan`
---
-ALTER TABLE `laporan`
-  MODIFY `id_laporan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT untuk tabel `log_aktivitas`
 --
 ALTER TABLE `log_aktivitas`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=219;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=238;
 
 --
 -- AUTO_INCREMENT untuk tabel `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
-
---
--- AUTO_INCREMENT untuk tabel `pengembalian`
---
-ALTER TABLE `pengembalian`
-  MODIFY `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT untuk tabel `request_peminjaman`
 --
 ALTER TABLE `request_peminjaman`
-  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT untuk tabel `request_pengembalian`
 --
 ALTER TABLE `request_pengembalian`
-  MODIFY `id_request_kembali` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_request_kembali` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
@@ -533,12 +510,6 @@ ALTER TABLE `log_aktivitas`
 --
 ALTER TABLE `peminjaman`
   ADD CONSTRAINT `fk_peminjaman_user` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
-
---
--- Ketidakleluasaan untuk tabel `pengembalian`
---
-ALTER TABLE `pengembalian`
-  ADD CONSTRAINT `fk_pengembalian_peminjaman` FOREIGN KEY (`id_peminjaman`) REFERENCES `peminjaman` (`id_peminjaman`) ON DELETE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `request_peminjaman`
