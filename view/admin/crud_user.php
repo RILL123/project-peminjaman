@@ -100,7 +100,6 @@ $notif = isset($_GET['notif']) ? $_GET['notif'] : '';
 							<th class="px-6 py-4 text-left text-sm font-semibold">Nama</th>
 							<th class="px-6 py-4 text-left text-sm font-semibold">Username</th>
 							<th class="px-6 py-4 text-left text-sm font-semibold">Role</th>
-							<th class="px-6 py-4 text-left text-sm font-semibold">Created At</th>
 							<th class="px-6 py-4 text-center text-sm font-semibold">Aksi</th>
 						</tr>
 					</thead>
@@ -115,7 +114,6 @@ $notif = isset($_GET['notif']) ? $_GET['notif'] : '';
 									<?= htmlspecialchars($row['role']) ?>
 								</span>
 							</td>
-							<td class="px-6 py-4 text-xs text-gray-500"><?= isset($row['create_at']) ? htmlspecialchars($row['create_at']) : '<span class="italic text-red-400">-</span>' ?></td>
 							<td class="px-6 py-4 text-center text-sm flex gap-2">
 								<a href="tambah_user.php?edit=<?= $row['id_user'] ?>" class="bg-perpusku1 hover:bg-perpusku2 text-white px-3 py-1 rounded shadow text-xs">Edit</a>
 								<a href="../../controller/aksi_crud_user.php?hapus=<?= $row['id_user'] ?>" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-xs" onclick="return confirm('Yakin hapus user ini?')">Hapus</a>

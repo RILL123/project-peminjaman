@@ -114,9 +114,7 @@ session_start();
                                 <p class="text-white text-sm font-semibold mb-2">Pengembalian Tertunda</p>
                                  <?php
                                 include '../../model/koneksi.php';
-                                $result = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM peminjaman p 
-                                    WHERE p.tanggal_kembali < CURDATE() 
-                                    AND p.id_peminjaman NOT IN (SELECT id_peminjaman FROM pengembalian)");
+                                $result = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM request_pengembalian");
                                 $row = mysqli_fetch_assoc($result);
                                 $total_kembali_tertunda = $row['total'];
                                 ?>
